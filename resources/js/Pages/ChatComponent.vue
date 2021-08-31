@@ -1,24 +1,33 @@
 <template>
-    <div>
-        <h1 class="group_name">テストグループ</h1>
+    <app-layout title="Dashboard">
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                Dashboard
+            </h2>
+        </template>
+
         <div>
-            {{ messages }}
-        </div>
-        <div class="chat_area">
-            <div v-for="message in messages" :key="message.id">
-                <div>{{ message }}</div>
+            <h1 class="group_name">テストグループ</h1>
+            <div>
+                {{ messages }}
             </div>
+            <div class="chat_area">
+                <div v-for="message in messages" :key="message.id">
+                    <div>{{ message }}</div>
+                </div>
+            </div>
+            <form class="text_box">
+                <input v-model="messageData.message">
+                <button type="button" @click.prevent="send">送信</button>
+            </form>
         </div>
-        <form class="text_box">
-            <input v-model="messageData.message">
-            <button type="button" @click.prevent="send">送信</button>
-        </form>
-    </div>
+    </app-layout>
 </template>
 
 <script>
+import AppLayout from '@/Layouts/AppLayout.vue'
+
 export default {
-    
     data() {
         return {
             messages: ["test","test2"],
@@ -27,6 +36,9 @@ export default {
                 message: ''
             }
         }
+    },
+    components: {
+            AppLayout,
     },
     methods: {
         async send() {
