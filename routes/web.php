@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\GroupController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,8 +30,8 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
-Route::get('/groups', function(){
-    return Inertia::render('ChatComponent');
-});
+Route::get('/groups', [GroupController::class, 'index'])
+    ->name('group.index')
+    ->middleware('auth');
 
 Route::post('/messages', [MessageController::class, 'store']);

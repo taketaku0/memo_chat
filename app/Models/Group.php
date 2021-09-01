@@ -13,6 +13,12 @@ class Group extends Model
     use SoftDeletes;
     protected $dates = ['deleted_at'];
 
+    protected $fillable = [
+        'group_name',
+        'group_description',
+        'host',
+    ];
+
     public function users()
     {
         return $this->belongsToMany('App\Models\User');
