@@ -43,12 +43,22 @@ class GroupController extends Controller
 
     public function edit(Group $group)
     {
-        //
+        return Inertia::render('Group/Edit', ['group' => $group]);
     }
 
     public function update(Request $request, Group $group)
     {
-        //
+        $request->validateWithBag('updateGroup', [
+            'group_name' => ['required'],
+        ]);
+
+        $group->update([
+            'group_name' => $request->group_name,
+            'group_description' => $request->group_description,
+            'host' => $request->host
+        ]);
+
+        return Redirect::route('group.index');
     }
 
     public function destroy(Group $group)

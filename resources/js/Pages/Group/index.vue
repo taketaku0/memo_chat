@@ -10,16 +10,17 @@
             <div class="max-w-7x1 mx-auto py-10 sm:px-6 lg:px-8">
                 <div>
                     <Link :href="route('group.create')">
-                        <jet-button class="bg-blue-700 text-base">グループを作成</jet-button>
+                        <jet-button class="bg-blue-700 text-base mb-10">グループを作成</jet-button>
                     </Link>
                 </div>
-                <table class="table-fixed">
+                <table class="table-auto">
                     <thead>
                         <tr>
                             <th class="w-1/12">id</th>
-                            <th class="w-3/12">名前</th>
-                            <th class="w-5/12">概要</th>
+                            <th class="w-2/12">名前</th>
+                            <th class="w-4/12">概要</th>
                             <th class="w-1/12">ホスト</th>
+                            <th class="w-2/12">更新</th>
                             <th class="w-2/12">削除</th>
                         </tr>
                     </thead>
@@ -29,6 +30,11 @@
                             <td class="border px-4 py-2">{{ group.group_name }}</td>
                             <td class="border px-4 py-2">{{ group.group_description }}</td>
                             <td class="border px-4 py-2">{{ group.host }}</td>
+                            <td class="border px-4 py-2 text-center">
+                                <Link :href="route('group.edit', group.id)">
+                                    <jet-button class="bg-green-500 text-base">更新</jet-button>
+                                </Link>
+                            </td>
                             <td class="border px-4 py-2 text-center">
                                 <jet-button class="bg-red-500 text-base" @click="deleteGroup(group.id)">削除</jet-button>
                            </td>
