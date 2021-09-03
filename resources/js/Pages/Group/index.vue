@@ -9,6 +9,11 @@
         <div>
             <div class="max-w-7x1 mx-auto py-10 sm:px-6 lg:px-8">
                 <button @click="debug(groups)">ログ出力</button>
+                <div>
+                    <Link :href="route('group.create')">
+                        <jet-button class="bg-blue-700 text-base">グループを作成</jet-button>
+                    </Link>
+                </div>
                 <table>
                     <thead>
                         <tr>
@@ -33,11 +38,16 @@
 </template>
 
 <script>
-    import AppLayout from '@/Layouts/AppLayout'
+    import AppLayout from '@/Layouts/AppLayout';
+    import JetButton from '@/Jetstream/Button';
+    import { Head, Link } from '@inertiajs/inertia-vue3';
 
     export default{
         components: { 
-            AppLayout 
+            Head,
+            AppLayout,
+            JetButton,
+            Link,
         },
         props:{
             groups:{
