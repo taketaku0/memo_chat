@@ -26,7 +26,7 @@ class GroupController extends Controller
         $request->validateWithBag('createGroup', [
             'group_name' => ['required'],
         ]);
-        
+
         $group = new Group;
         $group->group_name = $request->group_name;
         $group->group_description = $request->group_description;
@@ -53,6 +53,7 @@ class GroupController extends Controller
 
     public function destroy(Group $group)
     {
-        // 
+        $group->delete();
+        return Redirect::route('group.index');  
     }
 }
