@@ -42,7 +42,11 @@ Route::middleware(['auth'])->name('group.')->group(function (){
     
     Route::delete('/groups/{group}', [GroupController::class, 'destroy'])->name('destroy');
 
+    Route::get('/groups/{group}', [GroupController::class, 'show'])->name('show');
+
     Route::get('/groups/{group}/edit', [GroupController::class, 'edit'])->name('edit');
+
+    Route::get('/groups/{group}/join', [GroupController::class, 'join'])->name('join');
 });
 
 Route::post('/messages', [MessageController::class, 'store']);

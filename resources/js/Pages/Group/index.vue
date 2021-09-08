@@ -17,25 +17,40 @@
                     <thead>
                         <tr>
                             <th class="w-1/12">id</th>
-                            <th class="w-2/12">名前</th>
+                            <th class="w-3/12">名前</th>
                             <th class="w-4/12">概要</th>
                             <th class="w-1/12">ホスト</th>
-                            <th class="w-2/12">更新</th>
-                            <th class="w-2/12">削除</th>
+                            <th class="w-1/12"></th>
+                            <th class="w-1/12"></th>
+                            <th class="w-1/12"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="group in groups" :key="group.id">
-                            <td class="border px-4 py-2">{{ group.id }}</td>
+                            <td class="border px-2 py-2">{{ group.id }}</td>
                             <td class="border px-4 py-2">{{ group.group_name }}</td>
                             <td class="border px-4 py-2">{{ group.group_description }}</td>
-                            <td class="border px-4 py-2">{{ group.host }}</td>
-                            <td class="border px-4 py-2 text-center">
+                            <td class="border px-2 py-2">{{ group.host }}</td>
+                            <template v-if="isMembers(group.id)">
+                                <td class="border px-2 py-2 text-center">
+                                    <Link :href="route('group.show', group.id)">
+                                        <jet-button class="bg-blue-200 text-base">参加</jet-button>
+                                    </Link>
+                                </td>
+                            </template>
+                            <template v-else>
+                                <td class="border px-2 py-2 text-center">
+                                    <Link :href="route('group.join', group.id)">
+                                        <jet-button class="bg-blue-200 text-base">参加</jet-button>
+                                    </Link>
+                                </td>
+                            </template>
+                            <td class="border px-2 py-2 text-center">
                                 <Link :href="route('group.edit', group.id)">
                                     <jet-button class="bg-green-500 text-base">更新</jet-button>
                                 </Link>
                             </td>
-                            <td class="border px-4 py-2 text-center">
+                            <td class="border px-2 py-2 text-center">
                                 <jet-button class="bg-red-500 text-base" @click="deleteGroup(group.id)">削除</jet-button>
                            </td>
                         </tr>
@@ -53,7 +68,8 @@
 
     export default {
         props: {
-            groups: Array
+            groups: Object,
+            user: Object
         },
         components: { 
             Head,
@@ -73,8 +89,11 @@
                 this.form.delete(route("group.destroy", id), {
                     preserveScroll: true,
                 });
+            },
+            isMembers(id){
+                return this.user.id == id;
             }
-        }
+        },
     }
 </script>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -13,7 +14,10 @@ class GroupController extends Controller
     public function index()
     {
         $groups = Group::all();
-        return Inertia::render('Group/Index', ['groups' => $groups]);
+        return Inertia::render('Group/Index', [
+            'groups' => $groups,
+            'user' => Auth::user()
+        ]);
     }
 
     public function create()
@@ -38,7 +42,12 @@ class GroupController extends Controller
 
     public function show(Group $group)
     {
-        //  
+        return Inertia::render('Group/Show', [
+            'group' => $group, 
+            'user' => Auth::user(), 
+            'members' => $group->users()->pluck('name', 'users.id'), 
+            'messages' => $group->messages
+        ]);
     }
 
     public function edit(Group $group)
@@ -65,5 +74,11 @@ class GroupController extends Controller
     {
         $group->delete();
         return Redirect::route('group.index');  
+    }
+
+    public function join(Group $group)
+    {
+        $group->users()->syncWithoutDetaching(Auth::id());
+        return Redirect::route('group.show', $group->id);
     }
 }

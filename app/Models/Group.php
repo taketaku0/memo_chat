@@ -10,8 +10,8 @@ class Group extends Model
 {
     use HasFactory;
 
-    use SoftDeletes;
-    protected $dates = ['deleted_at'];
+    // use SoftDeletes;
+    // protected $dates = ['deleted_at'];
 
     protected $fillable = [
         'group_name',
@@ -22,5 +22,10 @@ class Group extends Model
     public function users()
     {
         return $this->belongsToMany('App\Models\User');
+    }
+
+    public function messages()
+    {
+        return $this->hasMany('App\Models\Message');
     }
 }
