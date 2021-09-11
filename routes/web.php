@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\GroupController;
 use App\Models\Group;
 use Illuminate\Foundation\Application;
@@ -50,3 +51,5 @@ Route::middleware(['auth'])->name('group.')->group(function (){
 });
 
 Route::post('/messages', [MessageController::class, 'store']);
+
+Route::middleware(['auth'])->get('/schedule', [ScheduleController::class, 'show'])->name('schedule.show');
