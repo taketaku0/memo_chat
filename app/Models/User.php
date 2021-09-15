@@ -68,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Message');
     }
+
+    public function schedules()
+    {
+        return $this->hasMany('App\Models\Schedule');
+    }
 }

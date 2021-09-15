@@ -36,9 +36,12 @@
         "@fullcalendar/core": "^5.9.0",
         "@fullcalendar/daygrid": "^5.9.0",
         "@fullcalendar/interaction": "^5.9.0",
+        "@fullcalendar/list": "^5.9.0",
+        "@fullcalendar/timegrid": "^5.9.0",
         "@fullcalendar/vue3": "^5.9.0",
         "laravel-echo": "^1.11.1",
         "socket.io": "^2.4.0",
-        "socket.io-client": "^2.4.0"
+        "socket.io-client": "^2.4.0",
+        "vue-flatpickr-component": "^9.0.5"
     }
 }
