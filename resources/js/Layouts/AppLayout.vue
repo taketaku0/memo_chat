@@ -33,7 +33,7 @@
                                     Group
                                 </jet-nav-link>
 
-                                <jet-nav-link :href="route('schedule.show')" :active="route().current('schedule.show')">
+                                <jet-nav-link :href="route('schedule.index')" :active="route().current('schedule.index')">
                                     Schedule
                                 </jet-nav-link>
                             </div>
@@ -164,7 +164,7 @@
                             Group
                         </jet-responsive-nav-link>
 
-                        <jet-responsive-nav-link :href="route('schedule.show')" :active="route().current('schedule.show')">
+                        <jet-responsive-nav-link :href="route('schedule.index')" :active="route().current('schedule.index')">
                             Schedule
                         </jet-responsive-nav-link>
                     </div>

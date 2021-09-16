@@ -10,18 +10,17 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <button type="button" @click="debug">debug</button>
                 <div class="bg-white shadow-xl sm:rounded-lg">
-                    <div class="py-2 sm:px-6 lg:px-8">
+                    <div class="py-2 mx-auto sm:px-6 lg:px-8">
                         <jet-button type="button" @click="createSchedule">予定を追加</jet-button>
                         <div class="my-2">
-                            <full-calendar :options="calendarOptions" />
+                            <full-calendar :options="calendarOptions" :key="key" />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        
-        <jet-dialog-modal :show="modal.showFlag" @close="clearModal">
+        <jet-dialog-modal :show="modal.showFlag" @close="this.clearData">
             <template #title> {{ modal.headTitle }} </template>
             <template #content>
                 <div class="mt-1">
@@ -54,8 +53,9 @@
                 </div>
             </template>
             <template #footer>
-                <jet-button type="button" @click="clearModal" class="mr-2">閉じる</jet-button>
-                <jet-button type="button" @click="validateForm" class="bg-blue-700">追加</jet-button>
+                <jet-button type="button" @click="clearData" class="mr-2">閉じる</jet-button>
+                <jet-button type="button" @click="validateForm" class="bg-blue-700" v-if="modal.createFlag">追加</jet-button>
+                <jet-button type="button" @click="validateForm" class="bg-blue-700" v-else>更新</jet-button>
             </template>
         </jet-dialog-modal>    
     </app-layout>
@@ -115,7 +115,8 @@
                     dateClick: this.dateClick,
                     contentHeight: 'auto',
                     eventResize: this.eventResize,
-                    eventDrop: this.eventDrop
+                    eventDrop: this.eventDrop,
+                    viewClassNames: this.viewClassNames
                 },
                 form: {
                     _method: "",
@@ -123,10 +124,12 @@
                     description: "",
                     start: "",
                     end: "",
+                    id: "",
                     user_id: this.user_id,
                 },
                 modal: {
                     showFlag: false,
+                    createFlag: false,
                     headTitle: "",
                     startData: "",
                     endData: "",
@@ -135,7 +138,9 @@
                 },
                 dateConfig: {
                     dateFormat: "Y-m-d",
-                    locale: Japanese
+                    locale: Japanese,
+                    altInput: true,
+                    altFormat: "Y/m/d (D)",
                 },
                 timeConfig: {
                     enableTime: true,
@@ -148,61 +153,56 @@
                     defaultHour: 0,
                 },
                 validateMessage: {},
+                key: 0
             }
         },
         methods: {
             dayCellContent(e) {
                 e.dayNumberText = e.dayNumberText.replace('日', '');
             },
+            viewClassNames(info){
+                this.calendarOptions.initialView = info.view.type;
+            },
             dateClick(info) {
-                
+                this.modal.headTitle = "新規作成";
+                this.modal.createFlag = true;
+                this.modal.startData = info.dateStr;
+                this.modal.endData = info.dateStr;
+                this.toggleShowFlag();
             },
             eventClick(info) {
-                console.log('Event: ' + info.event.title);
-                console.log('time: ' + info.event.start);
+                this.modal.headTitle = "詳細"
+                this.form.title = info.event.title;
+                this.form.description = info.event.extendedProps.description;
+                this.modal.startData = info.event.startStr.substr(0, 10);
+                this.modal.startTime = info.event.startStr.substr(11, 5);
+                this.modal.endData = info.event.endStr.substr(0, 10);
+                this.modal.endTime = info.event.endStr.substr(11, 5);
+                this.form.id = info.event.id;
+                console.log(info.event.id);
+                this.toggleShowFlag();
             },
             eventResize(info) {
-                console.log(info);
+                this.setForm(info);
             },
             eventDrop(info) {
-                console.log(info);
+                this.setForm(info);
+            },
+            setForm(info){
+                this.form.title = info.event.title;
+                this.form.description = info.event.extendedProps.description;
+                this.form.start = info.event.startStr;
+                this.form.end = info.event.endStr;
+                this.form.id = info.event.id;
+                this.updateSchedule();
             },
             debug() {
-                console.log(this.schedules);
-            },
-            toggleShowFlag() {
-                this.modal.showFlag = !this.modal.showFlag;
+                console.log(this.schedules)
             },
             createSchedule() {
                 this.modal.headTitle = "新規作成";
+                this.modal.createFlag = true;
                 this.toggleShowFlag();
-            },
-            async storeSchedule() {
-                this.form.start = this.modal.startData + "T" + this.modal.startTime;
-                this.form.end = this.modal.endData + "T" + this.modal.endTime;
-                this.form._method = "POST";
-                const response = await axios.post(route("schedule.store"), this.form);
-                this.schedules.push({"id":response.id, "title": this.form.title, "description": this.form.description, "start": this.form.start, "end": this.form.end});
-                this.clearModal();
-                this.clearForm();
-            },
-            setModal() {
-
-            },
-            clearModal() {
-                this.toggleShowFlag();
-                this.modal.headTitle = "";
-                this.modal.startData = "";
-                this.modal.endData =  "";
-                this.modal.startTime = "";
-                this.modal.endTime = "";
-            },
-            clearForm() {
-                this.form.title = "";
-                this.form.description = "";
-                this.form.start = "";
-                this.form.end = "";
-                this.form._method = "";
             },
             validateForm() {
                 this.validateMessage = {};
@@ -216,9 +216,61 @@
                     this.validateMessage.endData = '終了日を入力してください';
                 if(this.modal.endTime == "")
                     this.validateMessage.endTime = '終了時間を入力してください';
-                if(Object.keys(this.validateMessage).length == 0)
-                    this.storeSchedule();
-            }
+
+                if(Object.keys(this.validateMessage).length == 0) {
+                    this.form.start = this.modal.startData + "T" + this.modal.startTime;
+                    this.form.end = this.modal.endData + "T" + this.modal.endTime;
+                    if(this.modal.createFlag)
+                        this.storeSchedule();
+                    else 
+                        this.updateSchedule();
+                }
+            },
+            async storeSchedule() {
+                this.form._method = "POST";
+                const response = await axios.post(route("schedule.store"), this.form);
+                this.schedules.push({"id": response.data.id, "title": this.form.title, "description": this.form.description, "start": this.form.start, "end": this.form.end});
+                this.clearData();
+            },
+            async updateSchedule() {
+                this.calendarOptions.editable = false;
+                this.form._method = "PUT";
+                const response = await axios.put(route("schedule.update", this.form.id), this.form);
+                console.log(response.data.id);
+                const index = this.schedules.findIndex(el => el.id == response.data.id);
+                this.schedules[index] = {"id":response.data.id, "title": this.form.title, "description": this.form.description, "start": this.form.start, "end": this.form.end};
+                this.clearData();
+                this.calendarOptions.editable = true;
+            },
+            clearModal() {
+                if(this.modal.showFlag)
+                    this.toggleShowFlag();
+                this.modal.createFlag = false;
+                this.modal.headTitle = "";
+                this.modal.startData = "";
+                this.modal.endData =  "";
+                this.modal.startTime = "";
+                this.modal.endTime = "";
+            },
+            clearForm() {
+                this.form.title = "";
+                this.form.description = "";
+                this.form.start = "";
+                this.form.end = "";
+                this.form._method = "";
+                this.form.id = "";
+            },
+            clearData() {
+                this.clearModal();
+                this.clearForm();
+                this.toggleKey();
+            },
+            toggleKey() {
+                this.key = this.key ? 0 : 1;
+            },
+            toggleShowFlag() {
+                this.modal.showFlag = !this.modal.showFlag;
+            },
         }
     }
 </script>

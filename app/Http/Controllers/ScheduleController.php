@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class ScheduleController extends Controller
 {
-    public function show()
+    public function index()
     {
         $user = Auth::user();
         return Inertia::render('Schedule', [
@@ -29,6 +29,19 @@ class ScheduleController extends Controller
         $schedule->end = $request->end;
         $schedule->user_id = $request->user_id;
         $schedule->save();
+
+        return $schedule;
+    }
+
+    public function update(Request $request, Schedule $schedule)
+    {
+        $schedule->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'start' => $request->start,
+            'end' => $request->end,
+            'user_id' => $request->user_id
+        ]);
 
         return $schedule;
     }
