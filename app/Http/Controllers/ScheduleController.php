@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Schedule;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redirect;
 
 class ScheduleController extends Controller
 {
@@ -44,5 +42,11 @@ class ScheduleController extends Controller
         ]);
 
         return $schedule;
+    }
+
+    public function destroy(Schedule $schedule)
+    {
+        $schedule->delete();
+        return response(null, 204);  
     }
 }

@@ -8,7 +8,6 @@
 
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <button type="button" @click="debug">debug</button>
                 <div class="bg-white shadow-xl sm:rounded-lg">
                     <div class="py-2 mx-auto sm:px-6 lg:px-8">
                         <jet-button type="button" @click="createSchedule">予定を追加</jet-button>
@@ -53,9 +52,14 @@
                 </div>
             </template>
             <template #footer>
-                <jet-button type="button" @click="clearData" class="mr-2">閉じる</jet-button>
-                <jet-button type="button" @click="validateForm" class="bg-blue-700" v-if="modal.createFlag">追加</jet-button>
-                <jet-button type="button" @click="validateForm" class="bg-blue-700" v-else>更新</jet-button>
+                <div :class="{flex: !modal.createFlag, 'justify-between': !modal.createFlag}">
+                    <jet-delete-button type="button" @click="deleteSchedule" v-if="!modal.createFlag" class="text-left">削除</jet-delete-button>
+                    <div>
+                        <jet-button type="button" @click="clearData" class="mr-2">閉じる</jet-button>
+                        <jet-button type="button" @click="validateForm" class="bg-blue-700" v-if="modal.createFlag">追加</jet-button>
+                        <jet-button type="button" @click="validateForm" class="bg-blue-700" v-else>更新</jet-button>
+                    </div>
+                </div>
             </template>
         </jet-dialog-modal>    
     </app-layout>
@@ -71,6 +75,7 @@
     import jaLocale from '@fullcalendar/core/locales/ja'
     import AppLayout from '@/Layouts/AppLayout'
     import JetButton from '@/Jetstream/Button'
+    import JetDeleteButton from '@/Jetstream/DangerButton'
     import JetDialogModal from '@/Jetstream/DialogModal'
     import JetInput from '@/Jetstream/Input'
     import JetLabel from '@/Jetstream/Label'
@@ -86,11 +91,12 @@
             FullCalendar,
             AppLayout,
             JetButton,
+            JetDeleteButton,
             JetDialogModal,
             JetInput,
             JetLabel,
             JetInputError,
-            FlatPickr
+            FlatPickr,
         },
         data() {
             return {
@@ -135,6 +141,7 @@
                     endData: "",
                     startTime: "",
                     endTime: "",
+                    lock: false,
                 },
                 dateConfig: {
                     dateFormat: "Y-m-d",
@@ -164,6 +171,7 @@
                 this.calendarOptions.initialView = info.view.type;
             },
             dateClick(info) {
+                if(this.modal.lock) return;
                 this.modal.headTitle = "新規作成";
                 this.modal.createFlag = true;
                 this.modal.startData = info.dateStr;
@@ -179,7 +187,6 @@
                 this.modal.endData = info.event.endStr.substr(0, 10);
                 this.modal.endTime = info.event.endStr.substr(11, 5);
                 this.form.id = info.event.id;
-                console.log(info.event.id);
                 this.toggleShowFlag();
             },
             eventResize(info) {
@@ -189,6 +196,7 @@
                 this.setForm(info);
             },
             setForm(info){
+                this.modal.lock = true;
                 this.form.title = info.event.title;
                 this.form.description = info.event.extendedProps.description;
                 this.form.start = info.event.startStr;
@@ -196,10 +204,8 @@
                 this.form.id = info.event.id;
                 this.updateSchedule();
             },
-            debug() {
-                console.log(this.schedules)
-            },
             createSchedule() {
+                if(this.modal.lock) return;
                 this.modal.headTitle = "新規作成";
                 this.modal.createFlag = true;
                 this.toggleShowFlag();
@@ -233,14 +239,24 @@
                 this.clearData();
             },
             async updateSchedule() {
-                this.calendarOptions.editable = false;
+                this.lock();
                 this.form._method = "PUT";
                 const response = await axios.put(route("schedule.update", this.form.id), this.form);
-                console.log(response.data.id);
                 const index = this.schedules.findIndex(el => el.id == response.data.id);
                 this.schedules[index] = {"id":response.data.id, "title": this.form.title, "description": this.form.description, "start": this.form.start, "end": this.form.end};
                 this.clearData();
-                this.calendarOptions.editable = true;
+                this.unlock();
+            },
+            async deleteSchedule() {
+                const conf = confirm("本当に削除しますか？");
+                if(conf) {
+                    const response = await axios.delete(route("schedule.destroy", this.form.id));
+                    if(response.status == 204) {
+                        const index = this.schedules.findIndex(el => el.id == response.data.id);
+                        this.schedules.splice(index, 1);
+                        this.clearData();
+                    }
+                }
             },
             clearModal() {
                 if(this.modal.showFlag)
@@ -271,6 +287,16 @@
             toggleShowFlag() {
                 this.modal.showFlag = !this.modal.showFlag;
             },
+            lock(){
+                this.calendarOptions.navLinks = false;
+                this.calendarOptions.editable = false;
+                this.modal.lock = true;
+            },
+            unlock(){
+                this.calendarOptions.navLinks = true;
+                this.calendarOptions.editable = true;
+                this.modal.lock = false;
+            }
         }
     }
 </script>

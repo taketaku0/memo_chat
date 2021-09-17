@@ -37741,21 +37741,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fullcalendar_core_locales_ja__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @fullcalendar/core/locales/ja */ "./node_modules/@fullcalendar/core/locales/ja.js");
 /* harmony import */ var _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/Layouts/AppLayout */ "./resources/js/Layouts/AppLayout.vue");
 /* harmony import */ var _Jetstream_Button__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @/Jetstream/Button */ "./resources/js/Jetstream/Button.vue");
-/* harmony import */ var _Jetstream_DialogModal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @/Jetstream/DialogModal */ "./resources/js/Jetstream/DialogModal.vue");
-/* harmony import */ var _Jetstream_Input__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @/Jetstream/Input */ "./resources/js/Jetstream/Input.vue");
-/* harmony import */ var _Jetstream_Label__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @/Jetstream/Label */ "./resources/js/Jetstream/Label.vue");
-/* harmony import */ var _Jetstream_InputError__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @/Jetstream/InputError */ "./resources/js/Jetstream/InputError.vue");
-/* harmony import */ var vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vue-flatpickr-component */ "./node_modules/vue-flatpickr-component/dist/vue-flatpickr.min.js");
-/* harmony import */ var vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var flatpickr_dist_flatpickr_css__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! flatpickr/dist/flatpickr.css */ "./node_modules/flatpickr/dist/flatpickr.css");
-/* harmony import */ var flatpickr_dist_themes_material_green_css__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! flatpickr/dist/themes/material_green.css */ "./node_modules/flatpickr/dist/themes/material_green.css");
-/* harmony import */ var flatpickr_dist_l10n_ja_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! flatpickr/dist/l10n/ja.js */ "./node_modules/flatpickr/dist/l10n/ja.js");
-/* harmony import */ var flatpickr_dist_l10n_ja_js__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(flatpickr_dist_l10n_ja_js__WEBPACK_IMPORTED_MODULE_17__);
+/* harmony import */ var _Jetstream_DangerButton__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @/Jetstream/DangerButton */ "./resources/js/Jetstream/DangerButton.vue");
+/* harmony import */ var _Jetstream_DialogModal__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @/Jetstream/DialogModal */ "./resources/js/Jetstream/DialogModal.vue");
+/* harmony import */ var _Jetstream_Input__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @/Jetstream/Input */ "./resources/js/Jetstream/Input.vue");
+/* harmony import */ var _Jetstream_Label__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @/Jetstream/Label */ "./resources/js/Jetstream/Label.vue");
+/* harmony import */ var _Jetstream_InputError__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @/Jetstream/InputError */ "./resources/js/Jetstream/InputError.vue");
+/* harmony import */ var vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! vue-flatpickr-component */ "./node_modules/vue-flatpickr-component/dist/vue-flatpickr.min.js");
+/* harmony import */ var vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_15__);
+/* harmony import */ var flatpickr_dist_flatpickr_css__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! flatpickr/dist/flatpickr.css */ "./node_modules/flatpickr/dist/flatpickr.css");
+/* harmony import */ var flatpickr_dist_themes_material_green_css__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! flatpickr/dist/themes/material_green.css */ "./node_modules/flatpickr/dist/themes/material_green.css");
+/* harmony import */ var flatpickr_dist_l10n_ja_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! flatpickr/dist/l10n/ja.js */ "./node_modules/flatpickr/dist/l10n/ja.js");
+/* harmony import */ var flatpickr_dist_l10n_ja_js__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(flatpickr_dist_l10n_ja_js__WEBPACK_IMPORTED_MODULE_18__);
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -37780,11 +37782,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     FullCalendar: _fullcalendar_vue3__WEBPACK_IMPORTED_MODULE_2__.default,
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_8__.default,
     JetButton: _Jetstream_Button__WEBPACK_IMPORTED_MODULE_9__.default,
-    JetDialogModal: _Jetstream_DialogModal__WEBPACK_IMPORTED_MODULE_10__.default,
-    JetInput: _Jetstream_Input__WEBPACK_IMPORTED_MODULE_11__.default,
-    JetLabel: _Jetstream_Label__WEBPACK_IMPORTED_MODULE_12__.default,
-    JetInputError: _Jetstream_InputError__WEBPACK_IMPORTED_MODULE_13__.default,
-    FlatPickr: (vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_14___default())
+    JetDeleteButton: _Jetstream_DangerButton__WEBPACK_IMPORTED_MODULE_10__.default,
+    JetDialogModal: _Jetstream_DialogModal__WEBPACK_IMPORTED_MODULE_11__.default,
+    JetInput: _Jetstream_Input__WEBPACK_IMPORTED_MODULE_12__.default,
+    JetLabel: _Jetstream_Label__WEBPACK_IMPORTED_MODULE_13__.default,
+    JetInputError: _Jetstream_InputError__WEBPACK_IMPORTED_MODULE_14__.default,
+    FlatPickr: (vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_15___default())
   },
   data: function data() {
     return {
@@ -37828,11 +37831,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         startData: "",
         endData: "",
         startTime: "",
-        endTime: ""
+        endTime: "",
+        lock: false
       },
       dateConfig: {
         dateFormat: "Y-m-d",
-        locale: flatpickr_dist_l10n_ja_js__WEBPACK_IMPORTED_MODULE_17__.Japanese,
+        locale: flatpickr_dist_l10n_ja_js__WEBPACK_IMPORTED_MODULE_18__.Japanese,
         altInput: true,
         altFormat: "Y/m/d (D)"
       },
@@ -37841,7 +37845,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         dateFormat: "H:i",
         noCalendar: true,
         time_24hr: true,
-        locale: flatpickr_dist_l10n_ja_js__WEBPACK_IMPORTED_MODULE_17__.Japanese,
+        locale: flatpickr_dist_l10n_ja_js__WEBPACK_IMPORTED_MODULE_18__.Japanese,
         minuteIncrement: 1,
         defaultMinute: 0,
         defaultHour: 0
@@ -37858,6 +37862,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.calendarOptions.initialView = info.view.type;
     },
     dateClick: function dateClick(info) {
+      if (this.modal.lock) return;
       this.modal.headTitle = "新規作成";
       this.modal.createFlag = true;
       this.modal.startData = info.dateStr;
@@ -37873,7 +37878,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.modal.endData = info.event.endStr.substr(0, 10);
       this.modal.endTime = info.event.endStr.substr(11, 5);
       this.form.id = info.event.id;
-      console.log(info.event.id);
       this.toggleShowFlag();
     },
     eventResize: function eventResize(info) {
@@ -37883,6 +37887,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.setForm(info);
     },
     setForm: function setForm(info) {
+      this.modal.lock = true;
       this.form.title = info.event.title;
       this.form.description = info.event.extendedProps.description;
       this.form.start = info.event.startStr;
@@ -37890,10 +37895,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.form.id = info.event.id;
       this.updateSchedule();
     },
-    debug: function debug() {
-      console.log(this.schedules);
-    },
     createSchedule: function createSchedule() {
+      if (this.modal.lock) return;
       this.modal.headTitle = "新規作成";
       this.modal.createFlag = true;
       this.toggleShowFlag();
@@ -37955,14 +37958,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _this2.calendarOptions.editable = false;
+                _this2.lock();
+
                 _this2.form._method = "PUT";
                 _context2.next = 4;
                 return axios.put(route("schedule.update", _this2.form.id), _this2.form);
 
               case 4:
                 response = _context2.sent;
-                console.log(response.data.id);
                 index = _this2.schedules.findIndex(function (el) {
                   return el.id == response.data.id;
                 });
@@ -37976,14 +37979,54 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this2.clearData();
 
-                _this2.calendarOptions.editable = true;
+                _this2.unlock();
 
-              case 10:
+              case 9:
               case "end":
                 return _context2.stop();
             }
           }
         }, _callee2);
+      }))();
+    },
+    deleteSchedule: function deleteSchedule() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        var conf, response, index;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                conf = confirm("本当に削除しますか？");
+
+                if (!conf) {
+                  _context3.next = 6;
+                  break;
+                }
+
+                _context3.next = 4;
+                return axios["delete"](route("schedule.destroy", _this3.form.id));
+
+              case 4:
+                response = _context3.sent;
+
+                if (response.status == 204) {
+                  index = _this3.schedules.findIndex(function (el) {
+                    return el.id == response.data.id;
+                  });
+
+                  _this3.schedules.splice(index, 1);
+
+                  _this3.clearData();
+                }
+
+              case 6:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
       }))();
     },
     clearModal: function clearModal() {
@@ -38013,6 +38056,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     toggleShowFlag: function toggleShowFlag() {
       this.modal.showFlag = !this.modal.showFlag;
+    },
+    lock: function lock() {
+      this.calendarOptions.navLinks = false;
+      this.calendarOptions.editable = false;
+      this.modal.lock = true;
+    },
+    unlock: function unlock() {
+      this.calendarOptions.navLinks = true;
+      this.calendarOptions.editable = true;
+      this.modal.lock = false;
     }
   }
 });
@@ -43139,11 +43192,13 @@ var _hoisted_13 = {
   "class": "inline-block mt-2 sm:ml-1"
 };
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("閉じる");
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("削除");
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("追加");
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("閉じる");
 
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("更新");
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("追加");
+
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("更新");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _this = this;
@@ -43160,6 +43215,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_flat_pickr = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("flat-pickr");
 
+  var _component_jet_delete_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-delete-button");
+
   var _component_jet_dialog_modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-dialog-modal");
 
   var _component_app_layout = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("app-layout");
@@ -43171,12 +43228,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [_hoisted_1];
     }),
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-        type: "button",
-        onClick: _cache[0] || (_cache[0] = function () {
-          return $options.debug && $options.debug.apply($options, arguments);
-        })
-      }, "debug"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
         type: "button",
         onClick: $options.createSchedule
       }, {
@@ -43211,7 +43263,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             type: "text",
             "class": "mt-1 block w-full border-gray-900",
             modelValue: $data.form.title,
-            "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+            "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
               return $data.form.title = $event;
             })
           }, null, 8
@@ -43227,7 +43279,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             value: "詳細"
           }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
             id: "description",
-            "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+            "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
               return $data.form.description = $event;
             }),
             "class": "mt-1 block w-full form-input rounded-md shadow-sm"
@@ -43238,7 +43290,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             value: "開始"
           }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_flat_pickr, {
             modelValue: $data.modal.startData,
-            "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+            "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
               return $data.modal.startData = $event;
             }),
             config: $data.dateConfig,
@@ -43254,7 +43306,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           /* PROPS */
           , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_flat_pickr, {
             modelValue: $data.modal.startTime,
-            "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+            "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
               return $data.modal.startTime = $event;
             }),
             config: $data.timeConfig,
@@ -43273,7 +43325,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             value: "終了"
           }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_flat_pickr, {
             modelValue: $data.modal.endData,
-            "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
+            "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
               return $data.modal.endData = $event;
             }),
             config: $data.dateConfig,
@@ -43292,7 +43344,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             value: ""
           }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_flat_pickr, {
             modelValue: $data.modal.endTime,
-            "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+            "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
               return $data.modal.endTime = $event;
             }),
             config: $data.timeConfig,
@@ -43309,13 +43361,32 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])];
         }),
         footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
+          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+            "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
+              flex: !$data.modal.createFlag,
+              'justify-between': !$data.modal.createFlag
+            })
+          }, [!$data.modal.createFlag ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_delete_button, {
+            key: 0,
+            type: "button",
+            onClick: $options.deleteSchedule,
+            "class": "text-left"
+          }, {
+            "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+              return [_hoisted_14];
+            }),
+            _: 1
+            /* STABLE */
+
+          }, 8
+          /* PROPS */
+          , ["onClick"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
             type: "button",
             onClick: $options.clearData,
             "class": "mr-2"
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [_hoisted_14];
+              return [_hoisted_15];
             }),
             _: 1
             /* STABLE */
@@ -43329,7 +43400,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             "class": "bg-blue-700"
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [_hoisted_15];
+              return [_hoisted_16];
             }),
             _: 1
             /* STABLE */
@@ -43343,14 +43414,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             "class": "bg-blue-700"
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [_hoisted_16];
+              return [_hoisted_17];
             }),
             _: 1
             /* STABLE */
 
           }, 8
           /* PROPS */
-          , ["onClick"]))];
+          , ["onClick"]))])], 2
+          /* CLASS */
+          )];
         }),
         _: 1
         /* STABLE */
