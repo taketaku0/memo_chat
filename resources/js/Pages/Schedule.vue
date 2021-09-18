@@ -10,7 +10,10 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white shadow-xl sm:rounded-lg">
                     <div class="py-2 mx-auto sm:px-6 lg:px-8">
-                        <jet-button type="button" @click="createSchedule">予定を追加</jet-button>
+                        <div>
+                            <jet-button type="button" @click="createSchedule" class="align-middle inline-block">予定を追加</jet-button>
+                            <div class="inline-block text-3xl align-middle ml-4">{{ calendarTitle }}</div>    
+                        </div>
                         <div class="my-2">
                             <full-calendar :options="calendarOptions" :key="key" />
                         </div>
@@ -31,25 +34,30 @@
                     <jet-label for="description" value="詳細" />
                     <textarea id="description" v-model="form.description" class="mt-1 block w-full form-input rounded-md shadow-sm"></textarea>
                 </div>
-                <div class="inline-block mt-2">
-                    <jet-label for="start" value="開始" />
-                    <flat-pickr v-model="modal.startData" :config="dateConfig" placeholder="----/--/--" class="w-full"></flat-pickr>
-                    <jet-input-error v-if="validateMessage.startData" :message="validateMessage.startData" class="mt-2" />
+                <div>
+                    <div class="sm:inline-block sm:align-top mt-2">
+                        <jet-label for="startDate" value="開始" />
+                        <flat-pickr v-model="modal.startDate" :config="dateConfig" placeholder="----/--/--" class="w-full start" id="startDate"></flat-pickr>
+                        <jet-input-error v-if="validateMessage.startDate" :message="validateMessage.startDate" class="mt-2" />
+                    </div>
+                    <div class="sm:inline-block sm:align-top mt-2">
+                        <jet-label v-if="width >= 640" class="text-white select-none" for="startTime" value="時間" />
+                        <flat-pickr v-model="modal.startTime" :config="timeConfig" placeholder="--:--" class="w-full" id="startTime"></flat-pickr>
+                        <jet-input-error v-if="validateMessage.startTime" :message="validateMessage.startTime" class="mt-2" />
+                    </div>
                 </div>
-                <div class="inline-block mt-2 sm:ml-1">
-                    <flat-pickr v-model="modal.startTime" :config="timeConfig" placeholder="--:--" class="w-full"></flat-pickr>
-                    <jet-input-error v-if="validateMessage.startTime" :message="validateMessage.startTime" class="mt-2" />
-                </div>
-                <div class="inline-block mt-2">
-                    <jet-label for="end" value="終了" />
-                    <flat-pickr v-model="modal.endData" :config="dateConfig" placeholder="----/--/--" class="w-full"></flat-pickr>
-                    <jet-input-error v-if="validateMessage.endData" :message="validateMessage.endData" class="mt-2" />
-                </div>
-                <div class="inline-block mt-2 sm:ml-1">
-                    <jet-label for="end" value="" />
-                    <flat-pickr v-model="modal.endTime" :config="timeConfig" placeholder="--:--" class="w-full"></flat-pickr>
-                    <jet-input-error v-if="validateMessage.endTime" :message="validateMessage.endTime" class="mt-2" />
-                </div>
+                <div>                
+                    <div class="sm:inline-block sm:align-top mt-2">
+                        <jet-label for="endDate" value="終了" />
+                        <flat-pickr v-model="modal.endDate" :config="dateConfig" placeholder="----/--/--" class="w-full" id="endDate"></flat-pickr>
+                        <jet-input-error v-if="validateMessage.endDate" :message="validateMessage.endDate" class="mt-2" />
+                    </div>
+                    <div class="sm:inline-block sm:align-top mt-2">
+                        <jet-label v-if="width >= 640" class="text-white select-none" for="endTime" value="時間" />
+                        <flat-pickr v-model="modal.endTime" :config="timeConfig" placeholder="--:--" class="w-full" id="endTime"></flat-pickr>
+                        <jet-input-error v-if="validateMessage.endTime" :message="validateMessage.endTime" class="mt-2" />
+                    </div>
+                </div>     
             </template>
             <template #footer>
                 <div :class="{flex: !modal.createFlag, 'justify-between': !modal.createFlag}">
@@ -106,8 +114,31 @@
                     locale: jaLocale,
                     headerToolbar: {
                         left: 'prev,next today',
-                        center: 'title',
+                        //center: 'title',
                         right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                    },
+                    buttonText: {
+                        list: '一覧'
+                    },
+                    views: {
+                        dayGridMonth: {
+                            titleFormat: this.titleFormat
+                        },
+                        timeGridWeek: {        
+                            titleFormat: this.titleFormat,
+                            dayHeaderFormat: function (date) {
+                                const day = date.date.day;
+                                const weekNum = date.date.marker.getDay();
+                                const week = ['(日)', '(月)', '(火)', '(水)', '(木)', '(金)', '(土)'][weekNum];
+                                return day + ' ' + week;
+                            },
+                        },
+                        timeGridDay: {
+                            titleFormat: this.titleFormat
+                        },
+                        listMonth: {
+                            titleFormat: this.titleFormat
+                        }
                     },
                     selectable: true,
                     navLinks: true,
@@ -122,7 +153,7 @@
                     contentHeight: 'auto',
                     eventResize: this.eventResize,
                     eventDrop: this.eventDrop,
-                    viewClassNames: this.viewClassNames
+                    viewClassNames: this.viewClassNames,
                 },
                 form: {
                     _method: "",
@@ -137,8 +168,8 @@
                     showFlag: false,
                     createFlag: false,
                     headTitle: "",
-                    startData: "",
-                    endData: "",
+                    startDate: "",
+                    endDate: "",
                     startTime: "",
                     endTime: "",
                     lock: false,
@@ -160,12 +191,36 @@
                     defaultHour: 0,
                 },
                 validateMessage: {},
-                key: 0
+                validateMessageList: {
+                    title: 'タイトルは必須です',
+                    startDate: '開始日を入力してください',
+                    startTime: '開始時間を入力してください',
+                    endDate: '終了日を入力してください',
+                    endTime: '終了時間を入力してください',
+                },
+                calendarTitle: "test",
+                key: 0,
+                width: window.innerWidth
             }
         },
         methods: {
             dayCellContent(e) {
-                e.dayNumberText = e.dayNumberText.replace('日', '');
+                e.dayNumberText = e.dayNumberText.replace("日", "");
+            },
+            titleFormat(date) {
+                const year = date.date.year;
+                const startMonth = date.start.month + 1;
+                const endMonth = date.end.month + 1;
+                const day = date.date.day;
+
+                if(this.calendarOptions.initialView == "dayGridMonth" || this.calendarOptions.initialView == "timeGridWeek" || this.calendarOptions.initialView == "listMonth") {
+                    if (startMonth === endMonth)
+                        this.calendarTitle = year + "年" + startMonth + "月";
+                    else
+                        this.calendarTitle = year + "年" + startMonth + "～" + endMonth + "月";
+                }
+                else if(this.calendarOptions.initialView == "timeGridDay")
+                    this.calendarTitle = year + "年" + startMonth + "月" + day + "日";
             },
             viewClassNames(info){
                 this.calendarOptions.initialView = info.view.type;
@@ -174,17 +229,17 @@
                 if(this.modal.lock) return;
                 this.modal.headTitle = "新規作成";
                 this.modal.createFlag = true;
-                this.modal.startData = info.dateStr;
-                this.modal.endData = info.dateStr;
+                this.modal.startDate = info.dateStr;
+                this.modal.endDate = info.dateStr;
                 this.toggleShowFlag();
             },
             eventClick(info) {
                 this.modal.headTitle = "詳細"
                 this.form.title = info.event.title;
                 this.form.description = info.event.extendedProps.description;
-                this.modal.startData = info.event.startStr.substr(0, 10);
+                this.modal.startDate = info.event.startStr.substr(0, 10);
                 this.modal.startTime = info.event.startStr.substr(11, 5);
-                this.modal.endData = info.event.endStr.substr(0, 10);
+                this.modal.endDate = info.event.endStr.substr(0, 10);
                 this.modal.endTime = info.event.endStr.substr(11, 5);
                 this.form.id = info.event.id;
                 this.toggleShowFlag();
@@ -213,19 +268,25 @@
             validateForm() {
                 this.validateMessage = {};
                 if(this.form.title == "")
-                    this.validateMessage.title = 'タイトルは必須です';
-                if(this.modal.startData == "")
-                    this.validateMessage.startData = '開始日を入力してください';
+                    this.validateMessage.title = this.validateMessageList.title;
+                if(this.modal.startDate == "")
+                    this.validateMessage.startDate = this.validateMessageList.startDate;
                 if(this.modal.startTime == "")
-                    this.validateMessage.startTime = '開始時間を入力してください';
-                if(this.modal.endData == "")
-                    this.validateMessage.endData = '終了日を入力してください';
+                    this.validateMessage.startTime = this.validateMessageList.startTime;
+                if(this.modal.endDate == "")
+                    this.validateMessage.endDate = this.validateMessageList.endDate;
                 if(this.modal.endTime == "")
-                    this.validateMessage.endTime = '終了時間を入力してください';
-
+                    this.validateMessage.endTime = this.validateMessageList.endTime;
+                
                 if(Object.keys(this.validateMessage).length == 0) {
-                    this.form.start = this.modal.startData + "T" + this.modal.startTime;
-                    this.form.end = this.modal.endData + "T" + this.modal.endTime;
+                    if(this.calendarOptions.initialView == "timeGridDay" || this.calendarOptions.initialView == "timeGridWeek"){
+                        this.form.start = this.modal.startDate.substr(0, 10) + "T" + this.modal.startTime;
+                        this.form.end = this.modal.endDate.substr(0, 10) + "T" + this.modal.endTime;    
+                    }
+                    else{
+                        this.form.start = this.modal.startDate + "T" + this.modal.startTime;
+                        this.form.end = this.modal.endDate + "T" + this.modal.endTime;
+                    }
                     if(this.modal.createFlag)
                         this.storeSchedule();
                     else 
@@ -252,7 +313,7 @@
                 if(conf) {
                     const response = await axios.delete(route("schedule.destroy", this.form.id));
                     if(response.status == 204) {
-                        const index = this.schedules.findIndex(el => el.id == response.data.id);
+                        const index = this.schedules.findIndex(el => el.id == this.form.id);
                         this.schedules.splice(index, 1);
                         this.clearData();
                     }
@@ -263,8 +324,8 @@
                     this.toggleShowFlag();
                 this.modal.createFlag = false;
                 this.modal.headTitle = "";
-                this.modal.startData = "";
-                this.modal.endData =  "";
+                this.modal.startDate = "";
+                this.modal.endDate =  "";
                 this.modal.startTime = "";
                 this.modal.endTime = "";
             },
@@ -279,6 +340,7 @@
             clearData() {
                 this.clearModal();
                 this.clearForm();
+                this.validateMessage = {};
                 this.toggleKey();
             },
             toggleKey() {
@@ -296,7 +358,16 @@
                 this.calendarOptions.navLinks = true;
                 this.calendarOptions.editable = true;
                 this.modal.lock = false;
-            }
+            },
+            handleResize() {
+                this.width = window.innerWidth;
+            },
+        },
+        mounted: function() {
+            window.addEventListener('resize', this.handleResize);
+        },
+        beforeUnmount: function() {
+            window.removeEventListener('resize', this.handleResize);
         }
     }
 </script>

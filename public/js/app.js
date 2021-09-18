@@ -37797,8 +37797,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         locale: _fullcalendar_core_locales_ja__WEBPACK_IMPORTED_MODULE_7__.default,
         headerToolbar: {
           left: 'prev,next today',
-          center: 'title',
+          //center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+        },
+        buttonText: {
+          list: '一覧'
+        },
+        views: {
+          dayGridMonth: {
+            titleFormat: this.titleFormat
+          },
+          timeGridWeek: {
+            titleFormat: this.titleFormat,
+            dayHeaderFormat: function dayHeaderFormat(date) {
+              var day = date.date.day;
+              var weekNum = date.date.marker.getDay();
+              var week = ['(日)', '(月)', '(火)', '(水)', '(木)', '(金)', '(土)'][weekNum];
+              return day + ' ' + week;
+            }
+          },
+          timeGridDay: {
+            titleFormat: this.titleFormat
+          },
+          listMonth: {
+            titleFormat: this.titleFormat
+          }
         },
         selectable: true,
         navLinks: true,
@@ -37828,8 +37851,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         showFlag: false,
         createFlag: false,
         headTitle: "",
-        startData: "",
-        endData: "",
+        startDate: "",
+        endDate: "",
         startTime: "",
         endTime: "",
         lock: false
@@ -37851,12 +37874,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         defaultHour: 0
       },
       validateMessage: {},
-      key: 0
+      validateMessageList: {
+        title: 'タイトルは必須です',
+        startDate: '開始日を入力してください',
+        startTime: '開始時間を入力してください',
+        endDate: '終了日を入力してください',
+        endTime: '終了時間を入力してください'
+      },
+      calendarTitle: "test",
+      key: 0,
+      width: window.innerWidth
     };
   },
   methods: {
     dayCellContent: function dayCellContent(e) {
-      e.dayNumberText = e.dayNumberText.replace('日', '');
+      e.dayNumberText = e.dayNumberText.replace("日", "");
+    },
+    titleFormat: function titleFormat(date) {
+      var year = date.date.year;
+      var startMonth = date.start.month + 1;
+      var endMonth = date.end.month + 1;
+      var day = date.date.day;
+
+      if (this.calendarOptions.initialView == "dayGridMonth" || this.calendarOptions.initialView == "timeGridWeek" || this.calendarOptions.initialView == "listMonth") {
+        if (startMonth === endMonth) this.calendarTitle = year + "年" + startMonth + "月";else this.calendarTitle = year + "年" + startMonth + "～" + endMonth + "月";
+      } else if (this.calendarOptions.initialView == "timeGridDay") this.calendarTitle = year + "年" + startMonth + "月" + day + "日";
     },
     viewClassNames: function viewClassNames(info) {
       this.calendarOptions.initialView = info.view.type;
@@ -37865,17 +37907,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (this.modal.lock) return;
       this.modal.headTitle = "新規作成";
       this.modal.createFlag = true;
-      this.modal.startData = info.dateStr;
-      this.modal.endData = info.dateStr;
+      this.modal.startDate = info.dateStr;
+      this.modal.endDate = info.dateStr;
       this.toggleShowFlag();
     },
     eventClick: function eventClick(info) {
       this.modal.headTitle = "詳細";
       this.form.title = info.event.title;
       this.form.description = info.event.extendedProps.description;
-      this.modal.startData = info.event.startStr.substr(0, 10);
+      this.modal.startDate = info.event.startStr.substr(0, 10);
       this.modal.startTime = info.event.startStr.substr(11, 5);
-      this.modal.endData = info.event.endStr.substr(0, 10);
+      this.modal.endDate = info.event.endStr.substr(0, 10);
       this.modal.endTime = info.event.endStr.substr(11, 5);
       this.form.id = info.event.id;
       this.toggleShowFlag();
@@ -37903,15 +37945,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     validateForm: function validateForm() {
       this.validateMessage = {};
-      if (this.form.title == "") this.validateMessage.title = 'タイトルは必須です';
-      if (this.modal.startData == "") this.validateMessage.startData = '開始日を入力してください';
-      if (this.modal.startTime == "") this.validateMessage.startTime = '開始時間を入力してください';
-      if (this.modal.endData == "") this.validateMessage.endData = '終了日を入力してください';
-      if (this.modal.endTime == "") this.validateMessage.endTime = '終了時間を入力してください';
+      if (this.form.title == "") this.validateMessage.title = this.validateMessageList.title;
+      if (this.modal.startDate == "") this.validateMessage.startDate = this.validateMessageList.startDate;
+      if (this.modal.startTime == "") this.validateMessage.startTime = this.validateMessageList.startTime;
+      if (this.modal.endDate == "") this.validateMessage.endDate = this.validateMessageList.endDate;
+      if (this.modal.endTime == "") this.validateMessage.endTime = this.validateMessageList.endTime;
 
       if (Object.keys(this.validateMessage).length == 0) {
-        this.form.start = this.modal.startData + "T" + this.modal.startTime;
-        this.form.end = this.modal.endData + "T" + this.modal.endTime;
+        if (this.calendarOptions.initialView == "timeGridDay" || this.calendarOptions.initialView == "timeGridWeek") {
+          this.form.start = this.modal.startDate.substr(0, 10) + "T" + this.modal.startTime;
+          this.form.end = this.modal.endDate.substr(0, 10) + "T" + this.modal.endTime;
+        } else {
+          this.form.start = this.modal.startDate + "T" + this.modal.startTime;
+          this.form.end = this.modal.endDate + "T" + this.modal.endTime;
+        }
+
         if (this.modal.createFlag) this.storeSchedule();else this.updateSchedule();
       }
     },
@@ -38013,7 +38061,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 if (response.status == 204) {
                   index = _this3.schedules.findIndex(function (el) {
-                    return el.id == response.data.id;
+                    return el.id == _this3.form.id;
                   });
 
                   _this3.schedules.splice(index, 1);
@@ -38033,8 +38081,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (this.modal.showFlag) this.toggleShowFlag();
       this.modal.createFlag = false;
       this.modal.headTitle = "";
-      this.modal.startData = "";
-      this.modal.endData = "";
+      this.modal.startDate = "";
+      this.modal.endDate = "";
       this.modal.startTime = "";
       this.modal.endTime = "";
     },
@@ -38049,6 +38097,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     clearData: function clearData() {
       this.clearModal();
       this.clearForm();
+      this.validateMessage = {};
       this.toggleKey();
     },
     toggleKey: function toggleKey() {
@@ -38066,7 +38115,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.calendarOptions.navLinks = true;
       this.calendarOptions.editable = true;
       this.modal.lock = false;
+    },
+    handleResize: function handleResize() {
+      this.width = window.innerWidth;
     }
+  },
+  mounted: function mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeUnmount: function beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
   }
 });
 
@@ -43171,34 +43229,37 @@ var _hoisted_5 = {
 var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("予定を追加");
 
 var _hoisted_7 = {
-  "class": "my-2"
+  "class": "inline-block text-3xl align-middle ml-4"
 };
 var _hoisted_8 = {
-  "class": "mt-1"
+  "class": "my-2"
 };
 var _hoisted_9 = {
-  "class": "mt-2"
+  "class": "mt-1"
 };
 var _hoisted_10 = {
-  "class": "inline-block mt-2"
+  "class": "mt-2"
 };
 var _hoisted_11 = {
-  "class": "inline-block mt-2 sm:ml-1"
+  "class": "sm:inline-block sm:align-top mt-2"
 };
 var _hoisted_12 = {
-  "class": "inline-block mt-2"
+  "class": "sm:inline-block sm:align-top mt-2"
 };
 var _hoisted_13 = {
-  "class": "inline-block mt-2 sm:ml-1"
+  "class": "sm:inline-block sm:align-top mt-2"
+};
+var _hoisted_14 = {
+  "class": "sm:inline-block sm:align-top mt-2"
 };
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("削除");
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("削除");
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("閉じる");
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("閉じる");
 
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("追加");
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("追加");
 
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("更新");
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("更新");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _this = this;
@@ -43228,9 +43289,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [_hoisted_1];
     }),
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
         type: "button",
-        onClick: $options.createSchedule
+        onClick: $options.createSchedule,
+        "class": "align-middle inline-block"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [_hoisted_6];
@@ -43240,7 +43302,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
       }, 8
       /* PROPS */
-      , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_full_calendar, {
+      , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.calendarTitle), 1
+      /* TEXT */
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_full_calendar, {
         options: $data.calendarOptions,
         key: $data.key
       }, null, 8
@@ -43255,7 +43319,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           )];
         }),
         content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_label, {
+          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_label, {
             "for": "title",
             value: "タイトル"
           }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
@@ -43274,7 +43338,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             "class": "mt-2"
           }, null, 8
           /* PROPS */
-          , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_label, {
+          , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_label, {
             "for": "description",
             value: "詳細"
           }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
@@ -43285,80 +43349,91 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             "class": "mt-1 block w-full form-input rounded-md shadow-sm"
           }, null, 512
           /* NEED_PATCH */
-          ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.description]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_label, {
-            "for": "start",
+          ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.description]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_label, {
+            "for": "startDate",
             value: "開始"
           }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_flat_pickr, {
-            modelValue: $data.modal.startData,
+            modelValue: $data.modal.startDate,
             "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-              return $data.modal.startData = $event;
+              return $data.modal.startDate = $event;
             }),
             config: $data.dateConfig,
             placeholder: "----/--/--",
-            "class": "w-full"
+            "class": "w-full start",
+            id: "startDate"
           }, null, 8
           /* PROPS */
-          , ["modelValue", "config"]), $data.validateMessage.startData ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_input_error, {
+          , ["modelValue", "config"]), $data.validateMessage.startDate ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_input_error, {
             key: 0,
-            message: $data.validateMessage.startData,
+            message: $data.validateMessage.startDate,
             "class": "mt-2"
           }, null, 8
           /* PROPS */
-          , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_flat_pickr, {
+          , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [$data.width >= 640 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_label, {
+            key: 0,
+            "class": "text-white select-none",
+            "for": "startTime",
+            value: "時間"
+          })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_flat_pickr, {
             modelValue: $data.modal.startTime,
             "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
               return $data.modal.startTime = $event;
             }),
             config: $data.timeConfig,
             placeholder: "--:--",
-            "class": "w-full"
+            "class": "w-full",
+            id: "startTime"
           }, null, 8
           /* PROPS */
           , ["modelValue", "config"]), $data.validateMessage.startTime ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_input_error, {
-            key: 0,
+            key: 1,
             message: $data.validateMessage.startTime,
             "class": "mt-2"
           }, null, 8
           /* PROPS */
-          , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_label, {
-            "for": "end",
+          , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_label, {
+            "for": "endDate",
             value: "終了"
           }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_flat_pickr, {
-            modelValue: $data.modal.endData,
+            modelValue: $data.modal.endDate,
             "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
-              return $data.modal.endData = $event;
+              return $data.modal.endDate = $event;
             }),
             config: $data.dateConfig,
             placeholder: "----/--/--",
-            "class": "w-full"
+            "class": "w-full",
+            id: "endDate"
           }, null, 8
           /* PROPS */
-          , ["modelValue", "config"]), $data.validateMessage.endData ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_input_error, {
+          , ["modelValue", "config"]), $data.validateMessage.endDate ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_input_error, {
             key: 0,
-            message: $data.validateMessage.endData,
+            message: $data.validateMessage.endDate,
             "class": "mt-2"
           }, null, 8
           /* PROPS */
-          , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_label, {
-            "for": "end",
-            value: ""
-          }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_flat_pickr, {
+          , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [$data.width >= 640 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_label, {
+            key: 0,
+            "class": "text-white select-none",
+            "for": "endTime",
+            value: "時間"
+          })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_flat_pickr, {
             modelValue: $data.modal.endTime,
             "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
               return $data.modal.endTime = $event;
             }),
             config: $data.timeConfig,
             placeholder: "--:--",
-            "class": "w-full"
+            "class": "w-full",
+            id: "endTime"
           }, null, 8
           /* PROPS */
           , ["modelValue", "config"]), $data.validateMessage.endTime ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_input_error, {
-            key: 0,
+            key: 1,
             message: $data.validateMessage.endTime,
             "class": "mt-2"
           }, null, 8
           /* PROPS */
-          , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])];
+          , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])];
         }),
         footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
@@ -43373,7 +43448,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             "class": "text-left"
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [_hoisted_14];
+              return [_hoisted_15];
             }),
             _: 1
             /* STABLE */
@@ -43386,7 +43461,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             "class": "mr-2"
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [_hoisted_15];
+              return [_hoisted_16];
             }),
             _: 1
             /* STABLE */
@@ -43400,7 +43475,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             "class": "bg-blue-700"
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [_hoisted_16];
+              return [_hoisted_17];
             }),
             _: 1
             /* STABLE */
@@ -43414,7 +43489,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             "class": "bg-blue-700"
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [_hoisted_17];
+              return [_hoisted_18];
             }),
             _: 1
             /* STABLE */
