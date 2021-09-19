@@ -17,6 +17,12 @@
                                 </Link>
                             </div>
 
+                            <div class="flex-shrink-0 flex items-center sm:hidden" v-if="$slots.place">
+                                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                                    <slot name="place"></slot>
+                                </div>
+                            </div>
+
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
@@ -25,6 +31,14 @@
 
                                 <jet-nav-link :href="route('group.index')" :active="route().current('group.index')">
                                     Group
+                                </jet-nav-link>
+
+                                <jet-nav-link :href="route('schedule.index')" :active="route().current('schedule.index')">
+                                    Schedule
+                                </jet-nav-link>
+
+                                <jet-nav-link :href="route('group.show', $page.props.currentGroup.id)" :active="route().current('group.show', $page.props.currentGroup.id)" v-if="$page.props.currentGroup">
+                                    {{$page.props.currentGroup.group_name}}
                                 </jet-nav-link>
                             </div>
                         </div>
@@ -152,6 +166,14 @@
 
                         <jet-responsive-nav-link :href="route('group.index')" :active="route().current('group.index')">
                             Group
+                        </jet-responsive-nav-link>
+
+                        <jet-responsive-nav-link :href="route('schedule.index')" :active="route().current('schedule.index')">
+                            Schedule
+                        </jet-responsive-nav-link>
+                
+                        <jet-responsive-nav-link :href="route('group.show', $page.props.currentGroup.id)" :active="route().current('group.show', $page.props.currentGroup.id)" v-if="$page.props.currentGroup">
+                            {{$page.props.currentGroup.group_name}}
                         </jet-responsive-nav-link>
                     </div>
 

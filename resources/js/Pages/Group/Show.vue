@@ -1,6 +1,6 @@
 <template>
     <app-layout title="グループ">
-        <template #header>
+        <template #place>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{group.group_name}}
             </h2>

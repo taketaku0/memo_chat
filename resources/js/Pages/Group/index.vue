@@ -1,6 +1,6 @@
 <template>
     <app-layout title="Group">
-        <template #header>
+        <template #place>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Group
             </h2>
