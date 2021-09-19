@@ -42,6 +42,8 @@ class GroupController extends Controller
 
     public function show(Group $group)
     {
+        session(['currentGroup' => ['id' => $group->id, 'group_name' => $group->group_name]]);
+        Inertia::share('currentGroup', ['id' => $group->id, 'group_name' => $group->group_name]);
         return Inertia::render('Group/Show', [
             'group' => $group, 
             'user' => Auth::user(), 

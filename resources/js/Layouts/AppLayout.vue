@@ -36,6 +36,10 @@
                                 <jet-nav-link :href="route('schedule.index')" :active="route().current('schedule.index')">
                                     Schedule
                                 </jet-nav-link>
+
+                                <jet-nav-link :href="route('group.show', $page.props.currentGroup.id)" :active="route().current('group.show', $page.props.currentGroup.id)" v-if="$page.props.currentGroup">
+                                    {{$page.props.currentGroup.group_name}}
+                                </jet-nav-link>
                             </div>
                         </div>
 
@@ -166,6 +170,10 @@
 
                         <jet-responsive-nav-link :href="route('schedule.index')" :active="route().current('schedule.index')">
                             Schedule
+                        </jet-responsive-nav-link>
+                
+                        <jet-responsive-nav-link :href="route('group.show', $page.props.currentGroup.id)" :active="route().current('group.show', $page.props.currentGroup.id)" v-if="$page.props.currentGroup">
+                            {{$page.props.currentGroup.group_name}}
                         </jet-responsive-nav-link>
                     </div>
 

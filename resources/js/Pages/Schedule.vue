@@ -6,7 +6,7 @@
             </h2>
         </template>
 
-        <div class="py-4">
+        <div class="py-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white shadow-xl sm:rounded-lg">
                     <div class="py-2 mx-auto sm:px-6 lg:px-8">
