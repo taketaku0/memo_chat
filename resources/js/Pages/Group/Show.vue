@@ -279,6 +279,8 @@
                 this.scrollMessage();
             },
             scrollMessage() {
+                if(this.messages.length == 0) 
+                    return;
                 const messageContainer = document.getElementById('messageContainer');
                 const elementsMessage = messageContainer.children;
                 const elementMessage = elementsMessage[elementsMessage.length-1];
