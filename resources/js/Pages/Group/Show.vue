@@ -277,6 +277,8 @@
                 this.messageData.content = "";
                 await nextTick();
                 this.scrollMessage();
+                if(!this.calendarFlag)
+                    this.toggleCalendarFlag();
             },
             scrollMessage() {
                 if(this.messages.length == 0) 

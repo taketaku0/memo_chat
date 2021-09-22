@@ -36,6 +36,8 @@ Route::middleware(['auth'])->name('group.')->group(function (){
     Route::get('/groups', [GroupController::class, 'index'])->name('index');
 
     Route::post('/groups', [GroupController::class, 'store'])->name('store');
+
+    Route::post('/groups/search', [GroupController::class, 'search'])->name('search');
     
     Route::get('/groups/create', [GroupController::class, 'create'])->name('create');
     

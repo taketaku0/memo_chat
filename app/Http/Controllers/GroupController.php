@@ -6,6 +6,7 @@ use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -82,5 +83,13 @@ class GroupController extends Controller
     {
         $group->users()->syncWithoutDetaching(Auth::id());
         return Redirect::route('group.show', $group->id);
+    }
+    
+    public function search(Request $request)
+    {
+        $searchString = $request->searchString;
+        $groups = Group::where('group_name', 'like', '%'.$searchString.'%')->get();
+        
+        return response($groups, 200);  
     }
 }
