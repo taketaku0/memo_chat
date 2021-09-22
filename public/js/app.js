@@ -42128,7 +42128,7 @@ var _hoisted_15 = {
   "class": "text-indigo-500 text-xl font-medium mb-2"
 };
 var _hoisted_16 = {
-  "class": "text-gray-800 text-md font-medium mb-2"
+  "class": "text-gray-800 text-md font-medium mb-2 max-h-32 overflow-y-auto whitespace-pre-wrap overflow-wrap"
 };
 var _hoisted_17 = {
   "class": "text-gray-400 font-light text-md"
@@ -51627,7 +51627,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n@media (min-width: 640px) {\n.sm\\:group_card {\n        max-width: 270px;\n}\n}\n.group_card_icon{\n    height: 146px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media (min-width: 640px) {\n.sm\\:group_card {\n        max-width: 270px;\n}\n}\n.group_card_icon{\n    height: 146px;\n}\n.overflow-wrap {\n    overflow-wrap: break-word;\n    word-wrap: break-word;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

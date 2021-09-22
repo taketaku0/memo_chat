@@ -37,7 +37,7 @@
                                 <p class="text-indigo-500 text-xl font-medium mb-2">
                                     {{ group.group_name }}
                                 </p>
-                                <p class="text-gray-800 text-md font-medium mb-2">
+                                <p class="text-gray-800 text-md font-medium mb-2 max-h-32 overflow-y-auto whitespace-pre-wrap overflow-wrap">
                                     {{ group.group_description }}
                                 </p>
                                 <p class="text-gray-400 font-light text-md">
@@ -135,5 +135,10 @@
 
 .group_card_icon{
     height: 146px;
+}
+
+.overflow-wrap {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 </style>
