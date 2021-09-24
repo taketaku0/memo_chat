@@ -14,10 +14,14 @@ class GroupController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+        if(!$user) {
+            $user = ['id'=>-1, 'guest'=>true, 'name'=>'guest'];
+        }
         $groups = Group::all();
         return Inertia::render('Group/Index', [
             'groups' => $groups,
-            'user' => Auth::user()
+            'user' => $user
         ]);
     }
 

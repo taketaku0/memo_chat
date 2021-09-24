@@ -5,6 +5,7 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\GroupController;
 use App\Models\Group;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -20,24 +21,20 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return Redirect::route('group.index'); 
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Redirect::route('group.index'); 
 })->name('dashboard');
 
+Route::get('/groups', [GroupController::class, 'index'])->name('group.index');
+
+Route::post('/groups/search', [GroupController::class, 'search'])->name('group.search');
+
 Route::middleware(['auth'])->name('group.')->group(function (){
-    Route::get('/groups', [GroupController::class, 'index'])->name('index');
 
     Route::post('/groups', [GroupController::class, 'store'])->name('store');
-
-    Route::post('/groups/search', [GroupController::class, 'search'])->name('search');
     
     Route::get('/groups/create', [GroupController::class, 'create'])->name('create');
     

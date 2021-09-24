@@ -2,7 +2,7 @@
     <app-layout title="Group">
         <template #place>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Group
+                グループ
             </h2>
         </template>
 
