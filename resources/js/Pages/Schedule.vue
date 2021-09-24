@@ -2,7 +2,7 @@
     <app-layout title="schedule">
         <template #place>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Schedule
+                スケジュール
             </h2>
         </template>
 
