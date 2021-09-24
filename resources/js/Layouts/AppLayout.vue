@@ -42,11 +42,11 @@
                         <template v-if="$page.props.user.guest">
                             <div class="flex justify-center items-center">
                                 <Link :href="route('login')" class="text-base text-gray-700 underline">
-                                    Log in
+                                    ログイン
                                 </Link>
 
                                 <Link :href="route('register')" class="ml-5 text-base text-gray-700 underline">
-                                    Register
+                                    新規登録
                                 </Link>
                             </div>
                         </template>

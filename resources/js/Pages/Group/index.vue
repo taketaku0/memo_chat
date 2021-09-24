@@ -32,7 +32,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-10">
                     <div class="overflow-hidden shadow-lg rounded-lg mx-auto w-full sm:group_card border border-gray-300 mb-auto" v-for="group in groups" :key="group.id">
                         <div class="bg-white w-full">
-                            <div class="group_card_icon bg-blue-500" /> 
+                            <div class="group_card_icon" :class="setColor(group.id)"/> 
                             <div class="p-4">
                                 <p class="text-indigo-500 text-xl font-medium mb-2">
                                     {{ group.group_name }}
@@ -40,8 +40,8 @@
                                 <p class="text-gray-800 text-md font-medium mb-2 max-h-32 overflow-y-auto whitespace-pre-wrap overflow-wrap">
                                     {{ group.group_description }}
                                 </p>
-                                <p class="text-gray-400 font-light text-md">
-                                    {{ group.host }}
+                                <p class="text-gray-400 text-sm">
+                                    {{ users[group.host] }}が作成 
                                 </p>
                             </div>
                             <div class="mr-1 mb-2">
@@ -52,9 +52,7 @@
                                         </Link>
                                     </template>
                                     <template v-else>
-                                        <Link :href="route('group.join', group.id)">
-                                            <jet-button class="bg-blue-300 text-base mx-1 px-3">参加</jet-button>
-                                        </Link>
+                                        <jet-button class="bg-blue-300 text-base mx-1 px-3" @click="joinGroup(group.id)">参加</jet-button>
                                     </template>
                                     <template v-if="isHost(group.host)">
                                         <Link :href="route('group.edit', group.id)">
@@ -80,7 +78,9 @@
     export default {
         props: {
             groups: Object,
-            user: Object
+            user: Object,
+            joinedGroupId: Array,
+            users: Object
         },
         components: { 
             Head,
@@ -96,6 +96,14 @@
                 searchForm: {
                     searchString: ""
                 },
+                joinForm: this.$inertia.form({
+                    _method: "POST",
+                    group_id: '',
+                    content: '',
+                    joinFlag: true
+                }),
+                colorList: ['bg-red-300', 'bg-yellow-200', 'bg-blue-300', 'bg-green-300', 'bg-purple-300', 'bg-pink-300'],
+                colorChange: true
             }
         },
         methods:{
@@ -106,7 +114,8 @@
                 }
             },
             isMembers(id){
-                return this.user.id == id;
+                if(!this.joinedGroupId) return false
+                return this.joinedGroupId.some((groupId) => groupId == id);
             },
             isHost(id){
                 return this.user.id == id;
@@ -121,6 +130,15 @@
             clearSearchForm() {
                 this.searchForm.searchString = "";
                 this.serchGroup();
+            },
+            joinGroup(id) {
+                this.joinForm.group_id = id;
+                this.joinForm.content = this.user.name + "がグループに参加しました";
+                this.joinForm.post(route("message.store"));
+            },
+            setColor(id) {
+                let index = id % 6;
+                return this.colorList[index];
             }
         },
     }

@@ -49,7 +49,7 @@ Route::middleware(['auth'])->name('group.')->group(function (){
     Route::get('/groups/{group}/join', [GroupController::class, 'join'])->name('join');
 });
 
-Route::post('/messages', [MessageController::class, 'store']);
+Route::post('/messages', [MessageController::class, 'store'])->name('message.store');
 
 Route::middleware(['auth'])->name('schedule.')->group(function (){
     Route::get('/schedules', [ScheduleController::class, 'index'])->name('index');

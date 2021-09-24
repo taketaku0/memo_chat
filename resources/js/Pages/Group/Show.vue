@@ -14,7 +14,10 @@
                             <div class="messageContainer overflow-y-auto pb-1 overscroll-none" id="messageContainer">
                                 <div v-for="message in messages" :key="message.id">
                                     <div class="flow-root w-auto">
-                                        <div v-if="message.user_id == user.id" class="bg-green-300 max-w-2/3 w-max mx-4 my-2 p-2 rounded-lg float-right overflow-wrap whitespace-pre-wrap">
+                                        <div v-if="message.user_id == null" class="bg-gray-400 max-w-2/3 w-max mx-auto my-2 p-2 rounded-lg overflow-wrap whitespace-pre-wrap text-gray-200 text-xs">
+                                            {{ message.content }}
+                                        </div>
+                                        <div v-else-if="message.user_id == user.id" class="bg-green-300 max-w-2/3 w-max mx-4 my-2 p-2 rounded-lg float-right overflow-wrap whitespace-pre-wrap">
                                             {{ message.content }} 
                                         </div>
                                         <template v-else>
@@ -272,7 +275,7 @@
             async send() {
                 if(this.messageData.content == '') 
                     return;
-                await axios.post('/messages', this.messageData);
+                await axios.post(route("message.store"), this.messageData);
                 this.messages.push({"user_id" : this.messageData.user_id, "group_id" : this.messageData.group_id, "content" : this.messageData.content });
                 this.messageData.content = "";
                 await nextTick();
@@ -321,11 +324,16 @@
                 this.modal.showFlag = !this.modal.showFlag;
             },
             connect() {
-                Echo.channel("memo-chat-channel." + this.group.id).listen("MessageReceived", async (e) => {
-                    this.messages.push(e.messageData);
-                    await nextTick();
-                    this.scrollMessage();
-                });
+                Echo.channel("memo-chat-channel." + this.group.id)
+                    .listen("MessageReceived", async (e) => {
+                        this.messages.push(e.messageData);
+                        await nextTick();
+                        this.scrollMessage();
+                    }).listen("newMemberJoined", (e) => {
+                        for (var key in e.memberData) {
+                            this.members[key] = e.memberData[key];
+                        }
+                    });
             },
             disconnect() {
                 Echo.leave("memo-chat-channel." + this.group.id);

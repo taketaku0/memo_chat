@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\User;
+use App\Events\newMemberJoined;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -14,14 +16,20 @@ class GroupController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
-        if(!$user) {
-            $user = ['id'=>-1, 'guest'=>true, 'name'=>'guest'];
-        }
+        $user = User::find(Auth::id());
+        $joinedGroupId = null;
         $groups = Group::all();
+
+        if(!$user) 
+            $user = ['id'=>-1, 'guest'=>true, 'name'=>'guest'];
+        else
+            $joinedGroupId = $user->groups()->pluck('groups.id');
+
         return Inertia::render('Group/Index', [
             'groups' => $groups,
-            'user' => $user
+            'user' => $user,
+            'joinedGroupId' => $joinedGroupId,
+            'users' => User::pluck('name', 'users.id')
         ]);
     }
 
@@ -85,7 +93,16 @@ class GroupController extends Controller
 
     public function join(Group $group)
     {
+        $memberData = [
+            "group_id" => $group->id,
+            "user_id" => Auth::id(),
+            "name" => Auth::user()->name
+        ];
+        $json = json_encode($memberData);
+        $decoded_json = json_decode($json);
         $group->users()->syncWithoutDetaching(Auth::id());
+        broadcast(new newMemberJoined($decoded_json))->toOthers();
+        
         return Redirect::route('group.show', $group->id);
     }
     
