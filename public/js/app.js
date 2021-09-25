@@ -37131,7 +37131,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         content: '',
         joinFlag: true
       }),
-      colorList: ['bg-red-300', 'bg-yellow-200', 'bg-blue-300', 'bg-green-300', 'bg-purple-300', 'bg-pink-300'],
+      colorList: ['bg-red-300', 'bg-yellow-200', 'bg-green-300', 'bg-blue-300', 'bg-purple-300', 'bg-pink-300'],
       colorChange: true
     };
   },
@@ -37466,9 +37466,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           return _ref.apply(this, arguments);
         };
       }()).listen("newMemberJoined", function (e) {
-        for (var key in e.memberData) {
-          _this3.members[key] = e.memberData[key];
-        }
+        _this3.members[e.memberData.user_id] = e.memberData.name;
       });
     },
     disconnect: function disconnect() {

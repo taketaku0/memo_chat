@@ -330,9 +330,7 @@
                         await nextTick();
                         this.scrollMessage();
                     }).listen("newMemberJoined", (e) => {
-                        for (var key in e.memberData) {
-                            this.members[key] = e.memberData[key];
-                        }
+                        this.members[e.memberData.user_id] = e.memberData.name;
                     });
             },
             disconnect() {

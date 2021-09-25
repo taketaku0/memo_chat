@@ -18,7 +18,7 @@ class GroupController extends Controller
     {
         $user = User::find(Auth::id());
         $joinedGroupId = null;
-        $groups = Group::all();
+        $groups = Group::latest('updated_at')->get();
 
         if(!$user) 
             $user = ['id'=>-1, 'guest'=>true, 'name'=>'guest'];
@@ -49,6 +49,7 @@ class GroupController extends Controller
         $group->group_description = $request->group_description;
         $group->host = $request->host;
         $group->save();
+        $group->users()->syncWithoutDetaching(Auth::id());
 
         return Redirect::route('group.index');
     }
@@ -109,7 +110,7 @@ class GroupController extends Controller
     public function search(Request $request)
     {
         $searchString = $request->searchString;
-        $groups = Group::where('group_name', 'like', '%'.$searchString.'%')->get();
+        $groups = Group::where('group_name', 'like', '%'.$searchString.'%')->latest('updated_at')->get();
         
         return response($groups, 200);  
     }
