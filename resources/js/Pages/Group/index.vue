@@ -34,13 +34,13 @@
                         <div class="bg-white w-full">
                             <div class="group_card_icon" :class="setColor(group.id)"/> 
                             <div class="p-4">
-                                <p class="text-indigo-500 text-xl font-medium mb-2">
+                                <p class="text-indigo-500 text-lg font-medium mb-2 max-h-32 overflow-y-auto whitespace-pre-wrap overflow-wrap">
                                     {{ group.group_name }}
                                 </p>
-                                <p class="text-gray-800 text-md font-medium mb-2 max-h-32 overflow-y-auto whitespace-pre-wrap overflow-wrap">
+                                <p class="text-gray-800 text-base font-normal mb-2 max-h-32 overflow-y-auto whitespace-pre-wrap overflow-wrap">
                                     {{ group.group_description }}
                                 </p>
-                                <p class="text-gray-400 text-sm">
+                                <p class="text-gray-400 text-sm whitespace-pre-wrap overflow-wrap">
                                     {{ users[group.host] }}が作成 
                                 </p>
                             </div>

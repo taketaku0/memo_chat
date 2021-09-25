@@ -18,7 +18,7 @@
                             </div>
 
                             <div class="flex-shrink-0 flex items-center sm:hidden" v-if="$slots.place">
-                                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                                <div class="pl-2">
                                     <slot name="place"></slot>
                                 </div>
                             </div>
@@ -34,7 +34,9 @@
                                 </jet-nav-link>
 
                                 <jet-nav-link :href="route('group.show', $page.props.currentGroup.id)" :active="route().current('group.show', $page.props.currentGroup.id)" v-if="$page.props.currentGroup">
-                                    {{$page.props.currentGroup.group_name}}
+                                    <div class="overflow-hidden currentGroupNav break-words whitespace-nowrap overflow-ellipsis">
+                                        {{$page.props.currentGroup.group_name}}
+                                    </div>
                                 </jet-nav-link>
                             </div>
                         </div>
@@ -177,7 +179,9 @@
                         </jet-responsive-nav-link>
                 
                         <jet-responsive-nav-link :href="route('group.show', $page.props.currentGroup.id)" :active="route().current('group.show', $page.props.currentGroup.id)" v-if="$page.props.currentGroup">
-                            {{$page.props.currentGroup.group_name}}
+                            <div class="overflow-ellipsis overflow-hidden whitespace-nowrap">
+                                {{$page.props.currentGroup.group_name}}
+                            </div>
                         </jet-responsive-nav-link>
                     </div>
 
@@ -313,3 +317,9 @@
         }
     }
 </script>
+
+<style>
+.currentGroupNav {
+    max-width: 250px;
+}
+</style>

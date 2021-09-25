@@ -1,9 +1,11 @@
 <template>
     <app-layout title="グループ">
         <template #place>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{group.group_name}}
-            </h2>
+            <button type="button">
+                <div class="currentGroup overflow-ellipsis overflow-hidden whitespace-nowrap font-medium text-lg text-gray-800 leading-tight">
+                    {{group.group_name}}
+                </div>
+            </button>
         </template>
         
         <div class="xl:max-w-7xl xl:mx-auto xl:px-4 xl:sm:px-6 xl:px-8">
@@ -374,4 +376,8 @@
 }
 
 .st0{fill:#4B4B4B;}
+
+.currentGroup {
+    max-width: 200px;
+}
 </style>
