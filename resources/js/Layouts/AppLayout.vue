@@ -193,9 +193,9 @@
                                     <img class="h-10 w-10 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
                                 </div>
 
-                                <div>
-                                    <div class="font-medium text-base text-gray-800">{{ $page.props.user.name }}</div>
-                                    <div class="font-medium text-sm text-gray-500">{{ $page.props.user.email }}</div>
+                                <div class="w-full">
+                                    <div class="font-medium text-base text-gray-800 break-words">{{ $page.props.user.name }}</div>
+                                    <div class="font-medium text-sm text-gray-500 break-words">{{ $page.props.user.email }}</div>
                                 </div>
                             </div>
 
@@ -320,6 +320,6 @@
 
 <style>
 .currentGroupNav {
-    max-width: 250px;
+    max-width: 200px;
 }
 </style>

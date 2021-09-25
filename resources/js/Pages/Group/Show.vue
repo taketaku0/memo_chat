@@ -1,7 +1,7 @@
 <template>
     <app-layout title="グループ">
         <template #place>
-            <button type="button">
+            <button type="button" @click="showGroupList=true">
                 <div class="currentGroup overflow-ellipsis overflow-hidden whitespace-nowrap font-medium text-lg text-gray-800 leading-tight">
                     {{group.group_name}}
                 </div>
@@ -16,14 +16,14 @@
                             <div class="messageContainer overflow-y-auto pb-1 overscroll-none" id="messageContainer">
                                 <div v-for="message in messages" :key="message.id">
                                     <div class="flow-root w-auto">
-                                        <div v-if="message.user_id == null" class="bg-gray-400 max-w-2/3 w-max mx-auto my-2 p-2 rounded-lg overflow-wrap whitespace-pre-wrap text-gray-200 text-xs">
+                                        <div v-if="message.user_id == null" class="bg-gray-400 max-w-2/3 w-max mx-auto my-2 p-2 rounded-lg overflow-wrap whitespace-pre-wrap text-gray-200 text-xs 2xl:text-sm">
                                             {{ message.content }}
                                         </div>
                                         <div v-else-if="message.user_id == user.id" class="bg-green-300 max-w-2/3 w-max mx-4 my-2 p-2 rounded-lg float-right overflow-wrap whitespace-pre-wrap">
                                             {{ message.content }} 
                                         </div>
                                         <template v-else>
-                                            <div class="text-xs mx-4 w-max mt-2">
+                                            <div class="text-xs 2xl:text-sm mx-4 max-w-2/3 mt-2 overflow-wrap whitespace-pre-wrap">
                                                 {{ members[message.user_id] }}
                                             </div>
                                             <div class="bg-white max-w-2/3 w-max mx-4 mb-2 p-2 rounded-lg overflow-wrap whitespace-pre-wrap">
@@ -93,24 +93,24 @@
                 </div>
 
                 <template v-if="width >= 640">
-                    <div class="sm:py-4 w-auto mx-auto chatBox sm:w-1/3 align-top chatBox sm:chatBox" :class="{'inline-block': width < 1280}">
+                    <div class="sm:py-4 mx-auto chatBox sm:w-1/3 align-top chatBox sm:chatBox" :class="{'inline-block': width < 1280}">
                         <div class="sm:px-6 lg:px-8 h-full">
                             <div class="bg-gray-100 shadow-xl sm:rounded-lg h-full overflow-y-auto">
-                                <div class="container flex flex-col mx-auto w-full items-center justify-center">
-                                    <div class="px-4 py-5 sm:px-6 w-full border dark:bg-gray-800 bg-white shadow mb-2 rounded-md">
-                                        <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
+                                <div class="container flex flex-col mx-auto items-center justify-center">
+                                    <div class="px-4 py-5 sm:px-6 w-full border bg-white shadow mb-2 rounded-md">
+                                        <h3 class="text-lg leading-6 font-medium text-gray-900">
                                             メンバーリスト
                                         </h3>
                                     </div>
-                                    <ul class="flex flex-col w-full">
-                                        <li v-for="member in members" :key="member" class="border-gray-400 flex flex-row mb-2 mx-2">
-                                            <div class="shadow border bg-red-100 rounded-md flex flex-1 items-center p-4">
-                                                <div class="font-medium dark:text-white">
+                                    <div class="flex flex-col w-full">
+                                        <div v-for="member in members" :key="member" class="border-gray-400 mb-2 mx-2">
+                                            <div class="shadow border bg-red-100 rounded-md items-center p-4">
+                                                <div class="font-medium break-words">
                                                     {{member}}
                                                 </div>
                                             </div>
-                                        </li>
-                                    </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -119,7 +119,7 @@
             </div>
         </div>
 
-        <jet-dialog-modal :show="modal.showFlag" @close="this.clearData">
+        <jet-dialog-modal :show="modal.showFlag" @close="clearData">
             <template #title> {{ modal.headTitle }} </template>
             <template #content>
                 <div class="mt-1">
@@ -159,6 +159,28 @@
             <template #footer>
                 <jet-button type="button" @click="clearData" class="mr-2">閉じる</jet-button>
                 <jet-button type="button" @click="validateForm" class="bg-blue-700">追加</jet-button>    
+            </template>
+        </jet-dialog-modal>  
+
+        <jet-dialog-modal :show="showGroupList" @close="showGroupList=false">
+            <template #title>
+                <div class="font-bold">
+                    メンバーリスト
+                </div>
+            </template>
+            <template #content>
+                <div class="flex flex-col w-full max-h-80 overflow-y-auto">
+                    <div v-for="member in members" :key="member" class="border-gray-400 mb-2 mx-2">
+                        <div class="shadow border bg-red-100 rounded-md items-center p-4">
+                            <div class="font-medium break-words">
+                                {{member}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <template #footer>
+                <jet-button type="button" @click="showGroupList=false" class="mr-2">閉じる</jet-button> 
             </template>
         </jet-dialog-modal>  
 
@@ -234,6 +256,7 @@
                 },
                 width: window.innerWidth,
                 calendarFlag: true,
+                showGroupList: false
             }
         },
         components: {
