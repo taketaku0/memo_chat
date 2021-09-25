@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\User;
+use App\Events\newMemberJoined;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -13,10 +16,20 @@ class GroupController extends Controller
 {
     public function index()
     {
-        $groups = Group::all();
+        $user = User::find(Auth::id());
+        $joinedGroupId = null;
+        $groups = Group::latest('updated_at')->get();
+
+        if(!$user) 
+            $user = ['id'=>-1, 'guest'=>true, 'name'=>'guest'];
+        else
+            $joinedGroupId = $user->groups()->pluck('groups.id');
+
         return Inertia::render('Group/Index', [
             'groups' => $groups,
-            'user' => Auth::user()
+            'user' => $user,
+            'joinedGroupId' => $joinedGroupId,
+            'users' => User::pluck('name', 'users.id')
         ]);
     }
 
@@ -36,6 +49,7 @@ class GroupController extends Controller
         $group->group_description = $request->group_description;
         $group->host = $request->host;
         $group->save();
+        $group->users()->syncWithoutDetaching(Auth::id());
 
         return Redirect::route('group.index');
     }
@@ -80,7 +94,24 @@ class GroupController extends Controller
 
     public function join(Group $group)
     {
+        $memberData = [
+            "group_id" => $group->id,
+            "user_id" => Auth::id(),
+            "name" => Auth::user()->name
+        ];
+        $json = json_encode($memberData);
+        $decoded_json = json_decode($json);
         $group->users()->syncWithoutDetaching(Auth::id());
+        broadcast(new newMemberJoined($decoded_json))->toOthers();
+        
         return Redirect::route('group.show', $group->id);
+    }
+    
+    public function search(Request $request)
+    {
+        $searchString = $request->searchString;
+        $groups = Group::where('group_name', 'like', '%'.$searchString.'%')->latest('updated_at')->get();
+        
+        return response($groups, 200);  
     }
 }

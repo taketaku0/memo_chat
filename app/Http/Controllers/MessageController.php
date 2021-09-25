@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Message;
 use App\Events\MessageReceived;
+use Illuminate\Support\Facades\Redirect;
 
 class MessageController extends Controller
 {
@@ -18,6 +19,9 @@ class MessageController extends Controller
         
         broadcast(new MessageReceived($messageData))->toOthers();
         
-        return response($messageData, 201);
+        if($request->joinFlag)
+            return Redirect::route('group.join', $request->group_id);
+        else
+            return response($messageData, 201);
     }
 }

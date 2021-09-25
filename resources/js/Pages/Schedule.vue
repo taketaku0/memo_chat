@@ -2,11 +2,11 @@
     <app-layout title="schedule">
         <template #place>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Schedule
+                スケジュール
             </h2>
         </template>
 
-        <div class="py-6">
+        <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white shadow-xl sm:rounded-lg">
                     <div class="py-2 mx-auto sm:px-6 lg:px-8">
@@ -198,7 +198,7 @@
                     endDate: '終了日を入力してください',
                     endTime: '終了時間を入力してください',
                 },
-                calendarTitle: "test",
+                calendarTitle: "",
                 key: 0,
                 width: window.innerWidth
             }

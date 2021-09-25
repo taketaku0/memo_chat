@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Group;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -36,10 +37,16 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request)
     {
+        $currentGroup = session('currentGroup', null);
+        if($currentGroup) {
+            if(!Group::where('id', $currentGroup["id"])->exists()) {
+                $currentGroup = null;
+            }
+        }
         return array_merge(parent::share($request), [
             'appName' => config('app.name'),
 
-            'currentGroup' => session('currentGroup', null)
+            'currentGroup' => $currentGroup
         ]);
     }
 }
