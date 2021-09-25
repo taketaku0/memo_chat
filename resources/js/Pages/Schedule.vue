@@ -142,7 +142,7 @@
                     },
                     selectable: true,
                     navLinks: true,
-                    businessHours: true,
+                    businessHours: false,
                     editable: true,
                     dayCellContent: this.dayCellContent,
                     events: this.schedules,
@@ -373,5 +373,11 @@
 </script>
 
 <style>
+.fc-day-sun {
+    background-color: #ffc2cf
+}
 
+.fc-day-sat {
+    background-color: #b8e5ff;
+}
 </style>
