@@ -1,6 +1,7 @@
 {
     "private": true,
     "scripts": {
+        "build": "npm install -g laravel-echo-server",
         "dev": "npm run development",
         "development": "mix",
         "watch": "mix watch",
