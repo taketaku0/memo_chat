@@ -37364,7 +37364,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     connect: function connect() {
       var _this3 = this;
 
-      Echo["private"]("memo-chat-channel." + this.group.id).listen("MessageReceived", /*#__PURE__*/function () {
+      Echo.channel("memo-chat-channel." + this.group.id).listen("MessageReceived", /*#__PURE__*/function () {
         var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(e) {
           return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
             while (1) {
