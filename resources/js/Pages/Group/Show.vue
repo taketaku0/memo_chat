@@ -349,7 +349,7 @@
                 this.modal.showFlag = !this.modal.showFlag;
             },
             connect() {
-                Echo.private("memo-chat-channel." + this.group.id)
+                Echo.channel("memo-chat-channel." + this.group.id)
                     .listen("MessageReceived", async (e) => {
                         this.messages.push(e.messageData);
                         await nextTick();

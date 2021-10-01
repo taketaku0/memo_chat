@@ -33,6 +33,6 @@ class MessageReceived implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel("memo-chat-channel.".$this->messageData->group_id);
+        return new Channel("memo-chat-channel.".$this->messageData->group_id);
     }
 }
