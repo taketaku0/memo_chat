@@ -34,6 +34,6 @@ class newMemberJoined implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel("memo-chat-channel.".$this->memberData->group_id);
+        return new PrivateChannel("memo-chat-channel.".$this->memberData->group_id);
     }
 }
