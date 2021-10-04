@@ -16,7 +16,6 @@
         <!-- Scripts -->
         @routes
         <script src="{{ mix('js/app.js') }}" defer></script>
-        <script src="http://{{ Request::getHost() }}:6001/socket.io/socket.io.js"></script>
     </head>
     <body class="font-sans antialiased">
         @inertia

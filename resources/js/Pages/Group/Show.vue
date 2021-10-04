@@ -154,6 +154,7 @@
                         <flat-pickr v-model="modal.endTime" :config="timeConfig" placeholder="--:--" class="w-full" id="endTime"></flat-pickr>
                         <jet-input-error v-if="validateMessage.endTime" :message="validateMessage.endTime" class="mt-2" />
                     </div>
+                    <jet-input-error v-if="validateMessage.wrongInput" :message="validateMessage.wrongInput" class="mt-2" />
                 </div>
             </template>
             <template #footer>
@@ -253,6 +254,7 @@
                     startTime: '開始時間を入力してください',
                     endDate: '終了日を入力してください',
                     endTime: '終了時間を入力してください',
+                    wrongInput: '終了日時が開始日時よりも前に設定されています'
                 },
                 width: window.innerWidth,
                 calendarFlag: true,
@@ -289,6 +291,10 @@
                 if(Object.keys(this.validateMessage).length == 0) {        
                     this.form.start = this.modal.startDate + "T" + this.modal.startTime;
                     this.form.end = this.modal.endDate + "T" + this.modal.endTime;
+                    if(this.form.start > this.form.end){
+                        this.validateMessage.wrongInput = this.validateMessageList.wrongInput;
+                        return;
+                    }
                     this.storeSchedule();
                 }
             },
