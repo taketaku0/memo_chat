@@ -6,8 +6,8 @@
             </h2>
         </template>
 
-        <div>
-            <div class="max-w-7x1 mx-auto py-10 sm:px-6 lg:px-8">
+        <div class="xl:max-w-7xl xl:mx-auto xl:px-4 xl:sm:px-6 xl:px-8">
+            <div class="mx-auto py-10 sm:px-6 lg:px-8">
                 <jet-form-section @submitted="editGroup">
                     <template #title>グループ更新</template>
                     <template #description>グループ情報を更新します</template>
