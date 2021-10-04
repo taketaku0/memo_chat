@@ -37220,7 +37220,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         startDate: '開始日を入力してください',
         startTime: '開始時間を入力してください',
         endDate: '終了日を入力してください',
-        endTime: '終了時間を入力してください'
+        endTime: '終了時間を入力してください',
+        wrongInput: '終了日時が開始日時よりも前に設定されています'
       },
       width: window.innerWidth,
       calendarFlag: true,
@@ -37252,6 +37253,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (Object.keys(this.validateMessage).length == 0) {
         this.form.start = this.modal.startDate + "T" + this.modal.startTime;
         this.form.end = this.modal.endDate + "T" + this.modal.endTime;
+
+        if (this.form.start > this.form.end) {
+          this.validateMessage.wrongInput = this.validateMessageList.wrongInput;
+          return;
+        }
+
         this.storeSchedule();
       }
     },
@@ -38055,7 +38062,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         startDate: '開始日を入力してください',
         startTime: '開始時間を入力してください',
         endDate: '終了日を入力してください',
-        endTime: '終了時間を入力してください'
+        endTime: '終了時間を入力してください',
+        wrongInput: '終了日時が開始日時よりも前に設定されています'
       },
       calendarTitle: "",
       key: 0,
@@ -38136,7 +38144,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           this.form.end = this.modal.endDate + "T" + this.modal.endTime;
         }
 
-        if (this.modal.createFlag) this.storeSchedule();else this.updateSchedule();
+        if (this.form.start > this.form.end) {
+          this.validateMessage.wrongInput = this.validateMessageList.wrongInput;
+          return;
+        } else if (this.modal.createFlag) this.storeSchedule();else this.updateSchedule();
       }
     },
     storeSchedule: function storeSchedule() {
@@ -42759,7 +42770,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             "class": "mt-2"
           }, null, 8
           /* PROPS */
-          , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])];
+          , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), $data.validateMessage.wrongInput ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_input_error, {
+            key: 0,
+            message: $data.validateMessage.wrongInput,
+            "class": "mt-2"
+          }, null, 8
+          /* PROPS */
+          , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])];
         }),
         footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
@@ -44185,7 +44202,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             "class": "mt-2"
           }, null, 8
           /* PROPS */
-          , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])];
+          , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), $data.validateMessage.wrongInput ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_input_error, {
+            key: 0,
+            message: $data.validateMessage.wrongInput,
+            "class": "mt-2"
+          }, null, 8
+          /* PROPS */
+          , ["message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])];
         }),
         footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
