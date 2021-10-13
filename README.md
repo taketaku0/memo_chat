@@ -1,64 +1,103 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# メモチャット
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## アプリの概要
+このアプリは、スケジュール管理機能付きのチャットアプリです。
 
-## About Laravel
+## アプリを作成した背景
+日常生活において、チャットアプリを利用して予定を決める機会が増え、予定を決める度にスケジュール管理用のアプリを開いて予定を追加するのが面倒に感じ、これら2つの機能を同時に利用できるアプリがあれば便利ではないかと考えたため、本アプリを作成しました。
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 開発環境
+* Windows 10 Home 64-bit 20H2
+* XAMPP 8.0.9
+* PHP 8.0.9
+* Node.js 14.17.1
+* npm 6.14.13
+* Composer 2.1.6
+* Laravel 8.56.0
+* Vue.js 3.2.6
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 機能一覧
+* ユーザ認証
+* グループ
+    * 一覧表示
+    * 新規作成
+    * 編集
+    * 削除
+    * 参加
+    * 検索
+* グループチャット
+    * メッセージ送信
+    * メッセージ受信
+* スケジュール
+    * 月・週・日単位での一覧表示
+    * 全予定の一覧表示
+    * 新規作成
+    * 編集
+    * 削除
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 注力した機能・工夫点
+今回のアプリで実装した機能の内、特に力を入れた機能はチャット機能です。今回使用したフレームワーク(Laravel, Vue.js)がどちらも初めて使用するものだったことに加え、チャットの送受信機能では各フレームワークと Pusher との連携も必要になる等、様々な処理を組み合わせる必要があったため実装にとても苦労しましたが、できるだけ分かりやすく実装できるように注力しました。又、コードの可読性を良くするための工夫として、関数や変数の名前を付ける際に、何を行う関数なのかや、どのようなデータが入っているのかといったことが分かるような名前を付けるという工夫を行いました。
 
-## Learning Laravel
+## 環境構築手順
+ローカル環境で実行する場合には、このレポジトリをクローン後に以下の手順で環境構築をお願い致します。<br>
+※ローカル環境で実行する場合 Pusher のアカウントが必要です。
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Composerでパッケージをインストール
+    ```
+    composer install
+    ```
+2. .env.exampleファイルをコピーして.envファイルを作成
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. MySQL等を使用して本アプリ用のデータベースを作成
 
-## Laravel Sponsors
+4. [pusher.com](https://pusher.com/)にサインインし、Channelsに新しいアプリを作成
+    * クラスタに ap3(Tokyo)
+    * フロントエンドに Vue.js
+    * バックエンドに Laravel を選択してください
+<br><br>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+5. .env の以下の項目を設定　
+    ```
+    DB_CONNECTION=データベースの種類 (mysql等)
+    DB_HOST=ホスト
+    DB_PORT=ポート番号
+    DB_DATABASE=データベース名
+    DB_USERNAME=ユーザ名
+    DB_PASSWORD=パスワード
 
-### Premium Partners
+    BROADCAST_DRIVER=pusher
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
+    PUSHER_APP_ID=※
+    PUSHER_APP_KEY=※
+    PUSHER_APP_SECRET=※
+    PUSHER_APP_CLUSTER=ap3
+    ```
+    ※ pusher 部分は、手順4. で作成したアプリで表示される値を設定してください。
+    <br><br>
 
-## Contributing
+6. 以下のコマンドを実行してテーブルを作成
+    ```
+    php artisan migrate --seed 
+    ```
+    --seedを付けた場合ユーザが10人分作成されます。
+    (パスワードは password で固定ですが、メールアドレスはランダムのため確認が必要です。)<br><br>
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+7. npmでパッケージをインストールしビルド
+    ```
+    npm install && npm run dev
+    ```
 
-## Code of Conduct
+8. 最後にサーバを起動して完了となります
+    ```
+    php artisan serve --port=8080  // ポート番号は適宜変更をお願いします
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## デモ
+![demo](https://user-images.githubusercontent.com/86788890/137154776-5d061b46-d9b3-4992-8bee-3d31d9a38898.gif)
 
-## Security Vulnerabilities
+リンク<br>
+http://memo-chat-2021-2.herokuapp.com/groups
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+テストアカウント
+1. メールアドレス: test2@co.jp　パスワード: password
+2. メールアドレス: test3@co.jp　パスワード: password
