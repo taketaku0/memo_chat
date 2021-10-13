@@ -87,7 +87,12 @@
     npm install && npm run dev
     ```
 
-8. 最後にサーバを起動して完了となります
+8. アプリケーションキーを設定
+    ```
+    php artisan key:generate
+    ```
+
+9. 最後にサーバを起動して完了となります
     ```
     php artisan serve --port=8080  // ポート番号は適宜変更をお願いします
     ```
